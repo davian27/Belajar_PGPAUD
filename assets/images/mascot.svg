@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="peacockGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00C9FF"/>
+      <stop offset="50%" stop-color="#92FE9D"/>
+      <stop offset="100%" stop-color="#0E9F6E"/>
+    </linearGradient>
+    <radialGradient id="eyePattern" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="60%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </radialGradient>
+    <linearGradient id="maneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="50%" stop-color="#EF4444"/>
+      <stop offset="100%" stop-color="#B91C1C"/>
+    </linearGradient>
+    <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#CA8A04"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Dadak Merak Fan Background (Peacock Feathers) -->
+  <g id="dadak-merak" filter="url(#dropShadow)">
+    <path d="M 200 240 Q 60 50 40 180 Q 20 280 200 250 Z" fill="url(#peacockGrad)" opacity="0.95"/>
+    <path d="M 200 240 Q 340 50 360 180 Q 380 280 200 250 Z" fill="url(#peacockGrad)" opacity="0.95"/>
+    <path d="M 200 240 Q 80 10 200 30 Q 320 10 200 240 Z" fill="url(#peacockGrad)"/>
+    
+    <!-- Peacock Feather Eye Circles -->
+    <circle cx="100" cy="110" r="18" fill="url(#eyePattern)"/>
+    <circle cx="100" cy="110" r="8" fill="#FDE047"/>
+    <circle cx="160" cy="70" r="20" fill="url(#eyePattern)"/>
+    <circle cx="160" cy="70" r="9" fill="#FDE047"/>
+    <circle cx="200" cy="55" r="22" fill="url(#eyePattern)"/>
+    <circle cx="200" cy="55" r="10" fill="#FDE047"/>
+    <circle cx="240" cy="70" r="20" fill="url(#eyePattern)"/>
+    <circle cx="240" cy="70" r="9" fill="#FDE047"/>
+    <circle cx="300" cy="110" r="18" fill="url(#eyePattern)"/>
+    <circle cx="300" cy="110" r="8" fill="#FDE047"/>
+  </g>
+
+  <!-- Lion Hair / Mane (Singo Barong Mane) -->
+  <g id="lion-mane">
+    <path d="M 110 180 C 70 200 60 260 90 300 C 60 320 70 380 120 390 C 150 430 250 430 280 390 C 330 380 340 320 310 300 C 340 260 330 200 290 180 C 270 140 130 140 110 180 Z" fill="url(#maneGrad)"/>
+  </g>
+
+  <!-- Crown / Headband (Batik Motif Accent) -->
+  <path d="M 130 175 L 200 150 L 270 175 L 250 200 L 150 200 Z" fill="url(#goldGrad)"/>
+  <circle cx="200" cy="175" r="10" fill="#EF4444"/>
+
+  <!-- Face Base (Cute Singo Barong Lion) -->
+  <ellipse cx="200" cy="260" rx="90" ry="80" fill="url(#faceGrad)"/>
+  <ellipse cx="200" cy="285" rx="50" ry="40" fill="#FFF7ED"/>
+
+  <!-- Snout / Nose -->
+  <path d="M 185 260 Q 200 250 215 260 Q 200 280 185 260 Z" fill="#7C2D12"/>
+
+  <!-- Cute Big Eyes -->
+  <g id="eyes">
+    <!-- Left Eye -->
+    <ellipse cx="160" cy="235" rx="16" ry="22" fill="#1E293B"/>
+    <circle cx="155" cy="227" r="7" fill="#FFFFFF"/>
+    <circle cx="165" cy="242" r="3" fill="#FFFFFF"/>
+
+    <!-- Right Eye -->
+    <ellipse cx="240" cy="235" rx="16" ry="22" fill="#1E293B"/>
+    <circle cx="235" cy="227" r="7" fill="#FFFFFF"/>
+    <circle cx="245" cy="242" r="3" fill="#FFFFFF"/>
+
+    <!-- Cheeks (Blush) -->
+    <ellipse cx="140" cy="265" rx="14" ry="9" fill="#F43F5E" opacity="0.6"/>
+    <ellipse cx="260" cy="265" rx="14" ry="9" fill="#F43F5E" opacity="0.6"/>
+  </g>
+
+  <!-- Big Happy Smile -->
+  <path d="M 175 285 Q 200 320 225 285" fill="none" stroke="#7C2D12" stroke-width="6" stroke-linecap="round"/>
+  <!-- Cute Tongue -->
+  <path d="M 188 298 Q 200 318 212 298 Z" fill="#EF4444"/>
+
+  <!-- Cute White Tiger Teeth / Fangs -->
+  <polygon points="172,282 178,294 184,282" fill="#FFFFFF"/>
+  <polygon points="216,282 222,294 228,282" fill="#FFFFFF"/>
+
+  <!-- Cute Tiger Whisker Stems -->
+  <line x1="120" y1="260" x2="90" y2="255" stroke="#7C2D12" stroke-width="3" stroke-linecap="round"/>
+  <line x1="120" y1="272" x2="85" y2="275" stroke="#7C2D12" stroke-width="3" stroke-linecap="round"/>
+  <line x1="280" y1="260" x2="310" y2="255" stroke="#7C2D12" stroke-width="3" stroke-linecap="round"/>
+  <line x1="280" y1="272" x2="315" y2="275" stroke="#7C2D12" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Paws waving -->
+  <g id="paws">
+    <ellipse cx="110" cy="350" rx="22" ry="26" fill="url(#faceGrad)"/>
+    <circle cx="102" cy="345" r="5" fill="#FFF7ED"/>
+    <circle cx="112" cy="342" r="5" fill="#FFF7ED"/>
+    <circle cx="122" cy="347" r="5" fill="#FFF7ED"/>
+
+    <!-- Waving Right Paw -->
+    <g transform="rotate(-20 300 330)">
+      <ellipse cx="290" cy="330" rx="24" ry="28" fill="url(#faceGrad)"/>
+      <circle cx="280" cy="322" r="5" fill="#FFF7ED"/>
+      <circle cx="290" cy="318" r="5" fill="#FFF7ED"/>
+      <circle cx="300" cy="322" r="5" fill="#FFF7ED"/>
+    </g>
+  </g>
+</svg>

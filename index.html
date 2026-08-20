@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jelajah Budaya Nusantara – Petualangan Si Reog (PAUD/ECE)</title>
+  <meta name="description" content="Aplikasi edukasi web interaktif untuk anak usia dini 4-6 tahun mengenal kebudayaan Reog Ponorogo Indonesia.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top App Header Navigation -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="btn-child btn-primary" data-nav="home" aria-label="Ke Halaman Utama">
+        <span>🏠</span>
+        <span>Beranda</span>
+      </button>
+      <div class="app-title-mini">
+        <span>🦁</span> Petualangan Si Reog
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="star-counter-pill">
+        <span>⭐</span>
+        <span id="header-star-count">0</span>
+      </div>
+      <button class="btn-audio-toggle" id="btn-mute-toggle">
+        🔊 Audio On
+      </button>
+    </div>
+  </header>
+
+  <!-- Global Mascot Dialogue Bar -->
+  <div class="mascot-global-bar">
+    <img src="assets/images/mascot.svg" alt="Si Reog Mascot" class="mascot-avatar-small">
+    <div class="mascot-speech-bubble" id="mascot-dialog-text">
+      Halo, Teman! Selamat datang di Petualangan Si Reog!
+    </div>
+  </div>
+
+  <!-- Main Viewport Container -->
+  <main class="app-viewport">
+
+    <!-- 1. HOME SCREEN -->
+    <section class="screen-view active" id="screen-home">
+      <div class="home-hero-container">
+        <img src="assets/images/mascot.svg" alt="Si Reog Mascot Hero" class="home-mascot-hero">
+        <h1 class="home-title">Jelajah Budaya Nusantara<br>Petualangan Si Reog</h1>
+        <p class="home-subtitle">Belajar Budaya Indonesia Bersama Si Reog dengan Ceria!</p>
+
+        <div class="home-menu-grid">
+          <button class="btn-child btn-primary" data-nav="adventure">
+            <span>🗺️</span>
+            <span>MULAI PETUALANGAN</span>
+          </button>
+          <button class="btn-child btn-secondary" data-nav="learn">
+            <span>📖</span>
+            <span>BELAJAR BERSAMA</span>
+          </button>
+          <button class="btn-child btn-accent" data-nav="badges">
+            <span>🏆</span>
+            <span>LENCANAKU</span>
+          </button>
+          <button class="btn-child btn-audio-toggle" data-nav="parent-guide">
+            <span>👨‍👩‍👧‍👦</span>
+            <span>UNTUK ORANG TUA / GURU</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ADVENTURE MAP SCREEN -->
+    <section class="screen-view" id="screen-adventure">
+      <div class="glow-card">
+        <h2>🗺️ Peta Petualangan Nusantara</h2>
+        <p>Selesaikan setiap misi untuk mendapatkan bintang dan lencana budaya!</p>
+        <div class="adventure-map-grid" id="adventure-nodes-container">
+          <!-- Dynamically Rendered via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. LEARN ABOUT REOG SCREEN -->
+    <section class="screen-view" id="screen-learn">
+      <div class="glow-card">
+        <h2>📖 Kenalan Dengan Reog Ponorogo</h2>
+        <p>Yuk, kenali fakta dan kebudayaan Reog Ponorogo berikut ini!</p>
+        
+        <div class="learn-cards-grid">
+          <div class="learn-card glow-card">
+            <div class="learn-card-icon">🦁</div>
+            <p class="learn-card-text">"Ini adalah Reog Ponorogo. Kesenian tradisional yang sangat megah dan indah!"</p>
+            <button class="btn-speaker btn-learn-audio" data-speech="Ini adalah Reog Ponorogo. Kesenian tradisional yang sangat megah dan indah!">
+              🔊 Dengar
+            </button>
+          </div>
+
+          <div class="learn-card glow-card">
+            <div class="learn-card-icon">📍</div>
+            <p class="learn-card-text">"Reog berasal dari Ponorogo, Jawa Timur, Indonesia."</p>
+            <button class="btn-speaker btn-learn-audio" data-speech="Reog berasal dari Ponorogo, Jawa Timur, Indonesia.">
+              🔊 Dengar
+            </button>
+          </div>
+
+          <div class="learn-card glow-card">
+            <div class="learn-card-icon">👑</div>
+            <p class="learn-card-text">"Singo Barong adalah kepala singa raksasa yang menjadi ciri khas utama Reog."</p>
+            <button class="btn-speaker btn-learn-audio" data-speech="Singo Barong adalah kepala singa raksasa yang menjadi ciri khas utama Reog.">
+              🔊 Dengar
+            </button>
+          </div>
+
+          <div class="learn-card glow-card">
+            <div class="learn-card-icon">🦚</div>
+            <p class="learn-card-text">"Di atas kepala Reog ada Dadak Merak, yaitu hiasan bulu merak yang sangat cantik!"</p>
+            <button class="btn-speaker btn-learn-audio" data-speech="Di atas kepala Reog ada Dadak Merak, yaitu hiasan bulu merak yang sangat cantik!">
+              🔊 Dengar
+            </button>
+          </div>
+
+          <div class="learn-card glow-card">
+            <div class="learn-card-icon">🥁</div>
+            <p class="learn-card-text">"Reog diiringi oleh musik gamelan, kendang, dan suling yang bersemangat!"</p>
+            <button class="btn-speaker btn-learn-audio" data-speech="Reog diiringi oleh musik gamelan, kendang, dan suling yang bersemangat!">
+              🔊 Dengar
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+          <button class="btn-child btn-primary" data-nav="adventure">
+            <span>🗺️</span> Kembali ke Peta
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. INTERACTIVE STORY SCREEN -->
+    <section class="screen-view" id="screen-story">
+      <div id="story-scene-container" style="width: 100%;">
+        <!-- Rendered via app.js -->
+      </div>
+      <div class="story-controls-bar">
+        <button class="btn-child btn-secondary" id="btn-prev-story">
+          ⬅️ Sebelumnya
+        </button>
+        <button class="btn-speaker" id="btn-speak-story">
+          🔊 Dengar Cerita
+        </button>
+        <button class="btn-child btn-primary" id="btn-next-story">
+          Lanjut ➡️
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. PUZZLE GAME SCREEN -->
+    <section class="screen-view" id="screen-puzzle">
+      <div class="glow-card puzzle-layout">
+        <h2>🧩 Puzzle Reog Ponorogo</h2>
+        <p>Tarik atau tekan potongan gambar dan letakkan di posisi yang tepat!</p>
+        
+        <div id="puzzle-game-container">
+          <!-- Rendered via game.js -->
+        </div>
+
+        <button class="btn-child btn-secondary" data-nav="adventure">
+          <span>🗺️</span> Kembali ke Peta
+        </button>
+      </div>
+    </section>
+
+    <!-- 6. COLORING GAME SCREEN -->
+    <section class="screen-view" id="screen-coloring">
+      <div class="glow-card coloring-container">
+        <h2>🎨 Mewarnai Si Reog</h2>
+        <p>Pilih mode alat, ukuran kuas, dan warna lalu sentuh atau geser gambar untuk mewarnai!</p>
+
+        <!-- Tool Mode & Adjustable Brush Size Controls -->
+        <div class="coloring-tools-bar">
+          <div class="tool-group">
+            <span class="tool-label">Mode:</span>
+            <button class="btn-child btn-secondary tool-mode-btn active" data-mode="fill">🪣 Cat Ember</button>
+            <button class="btn-child btn-secondary tool-mode-btn" data-mode="brush">🖌️ Kuas</button>
+            <button class="btn-child btn-secondary tool-mode-btn" data-mode="eraser">🧹 Penghapus</button>
+          </div>
+
+          <div class="tool-group">
+            <span class="tool-label">Ukuran Kuas:</span>
+            <button class="btn-size-circle brush-size-btn" data-size="8" aria-label="Kuas Kecil">
+              <span class="size-dot dot-sm"></span> Kecil
+            </button>
+            <button class="btn-size-circle brush-size-btn active" data-size="16" aria-label="Kuas Sedang">
+              <span class="size-dot dot-md"></span> Sedang
+            </button>
+            <button class="btn-size-circle brush-size-btn" data-size="28" aria-label="Kuas Besar">
+              <span class="size-dot dot-lg"></span> Besar
+            </button>
+          </div>
+        </div>
+
+        <div class="coloring-canvas-wrap">
+          <canvas id="coloring-canvas"></canvas>
+        </div>
+
+        <div class="color-palette-bar">
+          <button class="color-btn selected" data-color="#EF4444" style="background: #EF4444;" aria-label="Merah"></button>
+          <button class="color-btn" data-color="#F59E0B" style="background: #F59E0B;" aria-label="Kuning"></button>
+          <button class="color-btn" data-color="#10B981" style="background: #10B981;" aria-label="Hijau"></button>
+          <button class="color-btn" data-color="#0EA5E9" style="background: #0EA5E9;" aria-label="Biru"></button>
+          <button class="color-btn" data-color="#8B5CF6" style="background: #8B5CF6;" aria-label="Ungu"></button>
+          <button class="color-btn" data-color="#EC4899" style="background: #EC4899;" aria-label="Merah Muda"></button>
+          <button class="color-btn" data-color="#7C2D12" style="background: #7C2D12;" aria-label="Cokelat"></button>
+          <button class="color-btn" data-color="#1E293B" style="background: #1E293B;" aria-label="Hitam"></button>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+          <button class="btn-child btn-secondary" id="btn-color-reset">🔄 Ulangi</button>
+          <button class="btn-child btn-accent" id="btn-color-finish">✨ Selesai Mewarnai</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SOUND / MUSIC GAME SCREEN -->
+    <section class="screen-view" id="screen-music">
+      <div id="music-game-container" style="width: 100%;">
+        <!-- Rendered via game.js -->
+      </div>
+    </section>
+
+    <!-- 8. SIMPLE QUIZ SCREEN -->
+    <section class="screen-view" id="screen-quiz">
+      <div id="quiz-game-container" style="width: 100%;">
+        <!-- Rendered via quiz.js -->
+      </div>
+    </section>
+
+    <!-- 9. MY BADGES SCREEN -->
+    <section class="screen-view" id="screen-badges">
+      <div class="glow-card">
+        <h2>🏆 Koleksi Lencana Budayaku</h2>
+        <p>Kumpulkan semua lencana hebat dengan menyelesaikan petualangan!</p>
+        
+        <div class="badges-grid" id="badges-grid-container">
+          <!-- Rendered via app.js -->
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+          <button class="btn-child btn-primary" data-nav="adventure">
+            <span>🗺️</span> Ke Peta Petualangan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. PARENT / TEACHER GUIDE SCREEN -->
+    <section class="screen-view" id="screen-parent-guide">
+      <div class="glow-card">
+        <h2>👨‍👩‍👧‍👦 Panduan Orang Tua & Guru</h2>
+        <p>Informasi tujuan pembelajaran dan petunjuk pendampingan anak usia 4–6 tahun.</p>
+
+        <div class="guide-tabs-bar">
+          <button class="guide-tab-btn active" data-target="guide-tab-1">Tujuan & Usia</button>
+          <button class="guide-tab-btn" data-target="guide-tab-2">Capaian Pembelajaran</button>
+          <button class="guide-tab-btn" data-target="guide-tab-3">Durasi & Tips</button>
+          <button class="guide-tab-btn" data-target="guide-tab-4">Penggunaan Offline</button>
+        </div>
+
+        <div class="guide-panel active" id="guide-tab-1">
+          <h3>🎯 Tujuan Aplikasi & Sasaran Usia</h3>
+          <p>Aplikasi ini dirancang khusus untuk anak usia 4–6 tahun (PAUD/TK) guna mengenalkan kebudayaan tradisional Reog Ponorogo dari Jawa Timur melalui aktivitas digital interaktif yang aman, menyenangkan, dan berorientasi visual.</p>
+        </div>
+
+        <div class="guide-panel" id="guide-tab-2">
+          <h3>🌟 Capaian Pembelajaran & Kompetensi Global</h3>
+          <ul>
+            <li><strong>Mengenal Kebudayaan Lokal:</strong> Menumbuhkan rasa cinta tanah air dan kebanggaan akan warisan budaya Nusantara.</li>
+            <li><strong>Kreativitas & Problem Solving:</strong> Melatih keterampilan motorik halus dan logika melalui puzzle dan mewarnai.</li>
+            <li><strong>Mendengar & Komunikasi:</strong> Mengembangkan daya simak audio dan pemahaman bahasa.</li>
+            <li><strong>Kesadaran Kebinekaan Global:</strong> Mengapresiasi keberagaman budaya sejak dini.</li>
+          </ul>
+        </div>
+
+        <div class="guide-panel" id="guide-tab-3">
+          <h3>⏱️ Durasi Sesi & Tips Pendampingan</h3>
+          <p><strong>Rekomendasi Durasi Belajar:</strong> 10–20 menit per sesi.</p>
+          <p>Disarankan orang tua atau guru mendampingi anak untuk berdialog aktif saat menyimak cerita dan mengenali alat musik tradisional.</p>
+        </div>
+
+        <div class="guide-panel" id="guide-tab-4">
+          <h3>📱 Penggunaan Offline & Keamanan Anak</h3>
+          <p>Aplikasi ini berjalan 100% secara offline tanpa koneksi internet. Bebas dari iklan, tanpa pengumpulan data pribadi, dan tanpa fitur obrolan luar.</p>
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+          <button class="btn-child btn-primary" data-nav="home">
+            <span>🏠</span> Kembali ke Beranda
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Victory Celebration Modal -->
+  <div class="modal-overlay" id="victory-modal">
+    <div class="modal-card">
+      <div style="font-size: 4rem;">🎉</div>
+      <h3 class="modal-title" id="victory-title">Hebat! Kamu Berhasil!</h3>
+      <p class="modal-desc" id="victory-desc">Kamu menyelesaikan permainan dengan sangat baik!</p>
+      <button class="btn-child btn-primary modal-close-btn">
+        <span>⭐</span> Lanjutkan Petualangan
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
