@@ -5,74 +5,43 @@
 
 class QuizEngine {
   constructor() {
-    this.questions = [
-      {
-        id: 1,
-        question: "Reog berasal dari daerah mana?",
-        audioText: "Reog berasal dari daerah mana ya?",
-        options: [
-          { text: "Ponorogo (Jawa Timur)", icon: "🦁", correct: true },
-          { text: "Jakarta", icon: "🏙️", correct: false },
-          { text: "Bali", icon: "🏝️", correct: false }
-        ]
-      },
-      {
-        id: 2,
-        question: "Reog Ponorogo merupakan...",
-        audioText: "Reog Ponorogo merupakan apa?",
-        options: [
-          { text: "Kesenian Tradisional", icon: "🎭", correct: true },
-          { text: "Kendaraan Mobil", icon: "🚗", correct: false },
-          { text: "Makanan Lezat", icon: "🍲", correct: false }
-        ]
-      },
-      {
-        id: 3,
-        question: "Mana yang menunjukkan kita menjaga budaya?",
-        audioText: "Mana perbuatan yang menjaga budaya kita?",
-        options: [
-          { text: "Belajar Budaya", icon: "❤️", correct: true },
-          { text: "Merusak Benda Budaya", icon: "❌", correct: false },
-          { text: "Mengejek Budaya", icon: "🙈", correct: false }
-        ]
-      },
-      {
-        id: 4,
-        question: "Musik pengiring Reog dimainkan dengan alat...",
-        audioText: "Musik pengiring Reog dimainkan dengan alat apa?",
-        options: [
-          { text: "Gamelan & Kendang", icon: "🥁", correct: true },
-          { text: "Telepon Genggam", icon: "📱", correct: false },
-          { text: "Roda Sepeda", icon: "🚲", correct: false }
-        ]
-      },
-      {
-        id: 5,
-        question: "Apa nama mahkota merak di atas kepala Reog?",
-        audioText: "Apa nama mahkota bulu merak di atas Reog?",
-        options: [
-          { text: "Dadak Merak", icon: "🦚", correct: true },
-          { text: "Topi Badut", icon: "🤡", correct: false },
-          { text: "Kacamata", icon: "🕶️", correct: false }
-        ]
-      }
-    ];
-
+    this.questions = window.appStorage ? window.appStorage.getQuizzes() : [];
     this.currentIndex = 0;
     this.score = 0;
   }
 
   initQuiz(containerId) {
+    this.questions = window.appStorage ? window.appStorage.getQuizzes() : [];
     this.currentIndex = 0;
     this.score = 0;
-    this.renderQuestion(containerId);
+    this.renderQuestion(containerId || 'quiz-game-container');
   }
 
   renderQuestion(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    if (!this.questions || this.questions.length === 0) {
+      container.innerHTML = '<div class="glow-card" style="text-align:center; padding: 20px;"><h3>Belum Ada Soal Kuis</h3><p>Tambahkan soal kuis melalui Dashboard Admin.</p></div>';
+      return;
+    }
+
     const q = this.questions[this.currentIndex];
+    const isSimpleStringArray = Array.isArray(q.options) && typeof q.options[0] === 'string';
+
+    const optionsHTML = isSimpleStringArray
+      ? q.options.map((optText, idx) => `
+          <button class="quiz-opt-btn" data-correct="${idx === q.answer}">
+            <span class="quiz-opt-icon">${q.icon || '❓'}</span>
+            <span class="quiz-opt-text">${optText}</span>
+          </button>
+        `).join('')
+      : (q.options || []).map((opt) => `
+          <button class="quiz-opt-btn" data-correct="${opt.correct}">
+            <span class="quiz-opt-icon">${opt.icon || '❓'}</span>
+            <span class="quiz-opt-text">${opt.text || ''}</span>
+          </button>
+        `).join('');
 
     container.innerHTML = `
       <div class="quiz-card glow-card">
@@ -88,12 +57,7 @@ class QuizEngine {
         </button>
 
         <div class="quiz-options-list">
-          ${q.options.map((opt, idx) => `
-            <button class="quiz-opt-btn" data-correct="${opt.correct}">
-              <span class="quiz-opt-icon">${opt.icon}</span>
-              <span class="quiz-opt-text">${opt.text}</span>
-            </button>
-          `).join('')}
+          ${optionsHTML}
         </div>
       </div>
     `;
@@ -102,12 +66,12 @@ class QuizEngine {
     const audioBtn = document.getElementById('btn-quiz-audio');
     if (audioBtn) {
       audioBtn.addEventListener('click', () => {
-        window.appAudio.speak(q.audioText);
+        window.appAudio.speak(q.audioText || q.question);
       });
     }
 
     // Speak initial question automatically
-    window.appAudio.speak(q.audioText);
+    window.appAudio.speak(q.audioText || q.question);
 
     // Option Event Listeners
     container.querySelectorAll('.quiz-opt-btn').forEach(btn => {

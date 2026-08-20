@@ -7,59 +7,18 @@ class AppController {
   constructor() {
     this.currentScreen = 'home';
     this.currentStoryScene = 0;
-
-    this.storyScenes = [
-      {
-        title: "Scene 1: Festival Budaya",
-        desc: "Budi dan Sisi pergi ke Festival Budaya Nusantara bersama ibu dan ayah. Ada banyak kebudayaan indah dari seluruh Indonesia!",
-        audioText: "Budi dan Sisi pergi ke Festival Budaya Nusantara bersama ibu dan ayah. Ada banyak kebudayaan indah dari seluruh Indonesia!",
-        icon: "🎡"
-      },
-      {
-        title: "Scene 2: Melihat Reog Pertama Kali",
-        desc: "Tiba-tiba terdengar suara musik yang meriah! Budi kaget melihat topeng singa raksasa bermahkota bulu merak yang sangat megah. Itulah Reog Ponorogo!",
-        audioText: "Tiba-tiba terdengar suara musik yang meriah! Budi kaget melihat topeng singa raksasa bermahkota bulu merak yang sangat megah. Itulah Reog Ponorogo!",
-        icon: "🦁"
-      },
-      {
-        title: "Scene 3: Mengenal Kostum Reog",
-        desc: "Penari Reog memakai kostum Singo Barong yang beratnya bisa mencapai 50 kilogram! Penari mengangkatnya hanya dengan menggunakan kekuatan gigi dan rahang.",
-        audioText: "Penari Reog memakai kostum Singo Barong yang sangat berat! Penari mengangkatnya hanya dengan kekuatan giginya.",
-        icon: "👑"
-      },
-      {
-        title: "Scene 4: Mendengarkan Musik Tradisional",
-        desc: "Suara gamelan, kendang, dan suling berbunyi nyaring. Ritme musiknya membuat semua orang ingin menari dengan gembira!",
-        audioText: "Suara gamelan, kendang, dan suling berbunyi nyaring. Ritme musiknya membuat semua orang ingin menari gembira!",
-        icon: "🪘"
-      },
-      {
-        title: "Scene 5: Berbincang dengan Penari",
-        desc: "Budi bertanya kepada Pak Penari, 'Bagaimana cara melestarikan Reog?' Pak Penari tersenyum dan menjawab, 'Dengan rajin belajar dan mencintai budaya kita!'",
-        audioText: "Pak Penari berpesan, rajinlah belajar dan cintai budaya Indonesia!",
-        icon: "🎭"
-      },
-      {
-        title: "Scene 6: Janji Menjaga Budaya",
-        desc: "Budi dan Sisi berjanji akan terus mengenalkan kebudayaan Indonesia kepada teman-teman lainnya agar budaya Nusantara tetap lestari.",
-        audioText: "Budi dan Sisi berjanji akan terus mengenalkan kebudayaan Indonesia agar tetap lestari.",
-        icon: "🤝"
-      },
-      {
-        title: "Scene 7: Lencana Sahabat Budaya",
-        desc: "Selamat! Kamu telah membaca cerita hingga selesai dan berhak mendapatkan Lencana Sahabat Budaya!",
-        audioText: "Selamat! Kamu telah membaca cerita hingga selesai dan berhak mendapatkan Lencana Sahabat Budaya!",
-        icon: "🏆"
-      }
-    ];
+    this.storyScenes = window.appStorage ? window.appStorage.getStories() : [];
   }
 
   init() {
+    this.storyScenes = window.appStorage.getStories();
     this.bindEvents();
     this.updateHeaderStats();
     this.renderAdventureMap();
     this.renderBadges();
+    this.renderLearnCards();
     this.showScreen('home');
+    if (window.appAdmin) window.appAdmin.init();
   }
 
   bindEvents() {
@@ -244,10 +203,25 @@ class AppController {
         break;
       case 'learn':
         window.appStorage.completeMission(1);
+        this.renderLearnCards();
         this.renderAdventureMap();
         this.sayMascot("Yuk, kita belajar mengenal Reog Ponorogo!", "cheerful");
         break;
+      case 'admin':
+        if (window.appStorage.isAdminLoggedIn()) {
+          this.showScreen('admin-dashboard');
+        } else {
+          this.showScreen('admin-login');
+        }
+        break;
+      case 'admin-login':
+        this.sayMascot("Masukkan username dan password untuk mengelola konten.", "informative");
+        break;
+      case 'admin-dashboard':
+        this.sayMascot("Selamat datang di Dashboard Admin Pengelola Konten!", "cheerful");
+        break;
       case 'story':
+        this.storyScenes = window.appStorage.getStories();
         this.currentStoryScene = 0;
         this.renderStoryScene();
         this.sayMascot("Dengarkan cerita seru tentang Reog ya!", "cheerful");
@@ -276,6 +250,19 @@ class AppController {
         this.sayMascot("Panduan belajar ini khusus untuk Orang Tua dan Guru.", "informative");
         break;
     }
+  }
+
+  renderLearnCards() {
+    const container = document.getElementById('learn-cards-container');
+    if (!container) return;
+    const cards = window.appStorage.getLearnCards();
+    container.innerHTML = cards.map(c => `
+      <div class="learn-card glow-card">
+        <div class="learn-card-icon">${c.icon || '🦁'}</div>
+        <h3 style="font-family: var(--font-heading); color: var(--primary-red); margin-bottom: 6px;">${c.title || ''}</h3>
+        <p class="learn-card-text">"${c.text || ''}"</p>
+      </div>
+    `).join('');
   }
 
   updateHeaderStats() {

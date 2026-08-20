@@ -29,6 +29,9 @@
       <button class="btn-audio-toggle" id="btn-mute-toggle">
         🔊 Audio On
       </button>
+      <button class="btn-audio-toggle" data-nav="admin" title="Dashboard Admin Content Manager" style="border-color: var(--primary-purple); color: var(--primary-purple);">
+        🔐 Admin
+      </button>
     </div>
   </header>
 
@@ -67,6 +70,10 @@
             <span>👨‍👩‍👧‍👦</span>
             <span>UNTUK ORANG TUA / GURU</span>
           </button>
+          <button class="btn-child btn-audio-toggle" data-nav="admin" style="border-color: var(--primary-purple); color: var(--primary-purple);">
+            <span>🔐</span>
+            <span>DASHBOARD ADMIN (KONTEN)</span>
+          </button>
         </div>
       </div>
     </section>
@@ -88,46 +95,8 @@
         <h2>📖 Kenalan Dengan Reog Ponorogo</h2>
         <p>Yuk, kenali fakta dan kebudayaan Reog Ponorogo berikut ini!</p>
         
-        <div class="learn-cards-grid">
-          <div class="learn-card glow-card">
-            <div class="learn-card-icon">🦁</div>
-            <p class="learn-card-text">"Ini adalah Reog Ponorogo. Kesenian tradisional yang sangat megah dan indah!"</p>
-            <button class="btn-speaker btn-learn-audio" data-speech="Ini adalah Reog Ponorogo. Kesenian tradisional yang sangat megah dan indah!">
-              🔊 Dengar
-            </button>
-          </div>
-
-          <div class="learn-card glow-card">
-            <div class="learn-card-icon">📍</div>
-            <p class="learn-card-text">"Reog berasal dari Ponorogo, Jawa Timur, Indonesia."</p>
-            <button class="btn-speaker btn-learn-audio" data-speech="Reog berasal dari Ponorogo, Jawa Timur, Indonesia.">
-              🔊 Dengar
-            </button>
-          </div>
-
-          <div class="learn-card glow-card">
-            <div class="learn-card-icon">👑</div>
-            <p class="learn-card-text">"Singo Barong adalah kepala singa raksasa yang menjadi ciri khas utama Reog."</p>
-            <button class="btn-speaker btn-learn-audio" data-speech="Singo Barong adalah kepala singa raksasa yang menjadi ciri khas utama Reog.">
-              🔊 Dengar
-            </button>
-          </div>
-
-          <div class="learn-card glow-card">
-            <div class="learn-card-icon">🦚</div>
-            <p class="learn-card-text">"Di atas kepala Reog ada Dadak Merak, yaitu hiasan bulu merak yang sangat cantik!"</p>
-            <button class="btn-speaker btn-learn-audio" data-speech="Di atas kepala Reog ada Dadak Merak, yaitu hiasan bulu merak yang sangat cantik!">
-              🔊 Dengar
-            </button>
-          </div>
-
-          <div class="learn-card glow-card">
-            <div class="learn-card-icon">🥁</div>
-            <p class="learn-card-text">"Reog diiringi oleh musik gamelan, kendang, dan suling yang bersemangat!"</p>
-            <button class="btn-speaker btn-learn-audio" data-speech="Reog diiringi oleh musik gamelan, kendang, dan suling yang bersemangat!">
-              🔊 Dengar
-            </button>
-          </div>
+        <div class="learn-cards-grid" id="learn-cards-container">
+          <!-- Dynamically Rendered via app.js -->
         </div>
 
         <div style="margin-top: 24px; text-align: center;">
@@ -140,117 +109,114 @@
 
     <!-- 4. INTERACTIVE STORY SCREEN -->
     <section class="screen-view" id="screen-story">
-      <div id="story-scene-container" style="width: 100%;">
-        <!-- Rendered via app.js -->
-      </div>
-      <div class="story-controls-bar">
-        <button class="btn-child btn-secondary" id="btn-prev-story">
-          ⬅️ Sebelumnya
-        </button>
-        <button class="btn-speaker" id="btn-speak-story">
-          🔊 Dengar Cerita
-        </button>
-        <button class="btn-child btn-primary" id="btn-next-story">
-          Lanjut ➡️
-        </button>
+      <div class="glow-card story-card">
+        <div class="story-icon" id="story-scene-icon">🎡</div>
+        <h2 class="story-title" id="story-scene-title">Scene 1: Festival Budaya</h2>
+        <p class="story-desc" id="story-scene-desc">Budi dan Sisi pergi ke Festival Budaya Nusantara bersama ibu dan ayah.</p>
+
+        <div class="story-progress" id="story-scene-progress">Langkah 1 dari 7</div>
+
+        <div class="story-controls-bar">
+          <button class="btn-child btn-secondary" id="btn-prev-story">
+            <span>⬅️</span> Sebelum
+          </button>
+
+          <button class="btn-child btn-primary" id="btn-next-story">
+            <span>Lanjut ➡️</span>
+          </button>
+        </div>
       </div>
     </section>
 
     <!-- 5. PUZZLE GAME SCREEN -->
     <section class="screen-view" id="screen-puzzle">
       <div class="glow-card puzzle-layout">
-        <h2>🧩 Puzzle Reog Ponorogo</h2>
-        <p>Tarik atau tekan potongan gambar dan letakkan di posisi yang tepat!</p>
-        
-        <div id="puzzle-game-container">
-          <!-- Rendered via game.js -->
+        <h2>🧩 Menyusun Topeng Si Reog</h2>
+        <p>Tarik atau tekan kepingan gambar di bawah ke tempat kotak yang tepat!</p>
+
+        <div class="puzzle-grid" id="puzzle-game-container">
+          <!-- Dynamically Rendered via game.js -->
         </div>
 
-        <button class="btn-child btn-secondary" data-nav="adventure">
-          <span>🗺️</span> Kembali ke Peta
-        </button>
+        <div class="puzzle-pool" id="puzzle-pool-container">
+          <!-- Dynamically Rendered via game.js -->
+        </div>
       </div>
     </section>
 
     <!-- 6. COLORING GAME SCREEN -->
     <section class="screen-view" id="screen-coloring">
       <div class="glow-card coloring-container">
-        <h2>🎨 Mewarnai Si Reog</h2>
-        <p>Pilih mode alat, ukuran kuas, dan warna lalu sentuh atau geser gambar untuk mewarnai!</p>
+        <h2>🎨 Mewarnai Topeng Singo Barong</h2>
+        <p>Pilih alat Ember Cat / Kuas / Penghapus dan warnai dengan kreasi bahagiamu!</p>
 
-        <!-- Tool Mode & Adjustable Brush Size Controls -->
         <div class="coloring-tools-bar">
           <div class="tool-group">
-            <span class="tool-label">Mode:</span>
-            <button class="btn-child btn-secondary tool-mode-btn active" data-mode="fill">🪣 Cat Ember</button>
-            <button class="btn-child btn-secondary tool-mode-btn" data-mode="brush">🖌️ Kuas</button>
-            <button class="btn-child btn-secondary tool-mode-btn" data-mode="eraser">🧹 Penghapus</button>
+            <span class="tool-label">Mode Alat:</span>
+            <button class="btn-child btn-audio-toggle tool-mode-btn active" data-mode="fill">🪣 Cat Ember</button>
+            <button class="btn-child btn-audio-toggle tool-mode-btn" data-mode="brush">🖌️ Kuas</button>
+            <button class="btn-child btn-audio-toggle tool-mode-btn" data-mode="eraser">🧹 Penghapus</button>
           </div>
 
           <div class="tool-group">
-            <span class="tool-label">Ukuran Kuas:</span>
-            <button class="btn-size-circle brush-size-btn" data-size="8" aria-label="Kuas Kecil">
-              <span class="size-dot dot-sm"></span> Kecil
-            </button>
-            <button class="btn-size-circle brush-size-btn active" data-size="16" aria-label="Kuas Sedang">
-              <span class="size-dot dot-md"></span> Sedang
-            </button>
-            <button class="btn-size-circle brush-size-btn" data-size="28" aria-label="Kuas Besar">
-              <span class="size-dot dot-lg"></span> Besar
-            </button>
+            <span class="tool-label">Ukuran:</span>
+            <button class="btn-size-circle size-btn" data-size="small"><span class="size-dot dot-sm"></span> Kecil</button>
+            <button class="btn-size-circle size-btn active" data-size="medium"><span class="size-dot dot-md"></span> Sedang</button>
+            <button class="btn-size-circle size-btn" data-size="large"><span class="size-dot dot-lg"></span> Besar</button>
           </div>
+
+          <button class="btn-child btn-secondary" id="btn-clear-coloring">
+            <span>🔄</span> Ulangi
+          </button>
         </div>
 
         <div class="coloring-canvas-wrap">
-          <canvas id="coloring-canvas"></canvas>
+          <canvas id="coloring-canvas" width="600" height="450"></canvas>
         </div>
 
-        <div class="color-palette-bar">
-          <button class="color-btn selected" data-color="#EF4444" style="background: #EF4444;" aria-label="Merah"></button>
-          <button class="color-btn" data-color="#F59E0B" style="background: #F59E0B;" aria-label="Kuning"></button>
-          <button class="color-btn" data-color="#10B981" style="background: #10B981;" aria-label="Hijau"></button>
-          <button class="color-btn" data-color="#0EA5E9" style="background: #0EA5E9;" aria-label="Biru"></button>
-          <button class="color-btn" data-color="#8B5CF6" style="background: #8B5CF6;" aria-label="Ungu"></button>
-          <button class="color-btn" data-color="#EC4899" style="background: #EC4899;" aria-label="Merah Muda"></button>
-          <button class="color-btn" data-color="#7C2D12" style="background: #7C2D12;" aria-label="Cokelat"></button>
-          <button class="color-btn" data-color="#1E293B" style="background: #1E293B;" aria-label="Hitam"></button>
+        <div class="color-palette-bar" id="color-palette-container">
+          <!-- Dynamically Rendered via game.js -->
         </div>
 
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-          <button class="btn-child btn-secondary" id="btn-color-reset">🔄 Ulangi</button>
-          <button class="btn-child btn-accent" id="btn-color-finish">✨ Selesai Mewarnai</button>
+        <div style="margin-top: 12px;">
+          <button class="btn-child btn-primary" id="btn-finish-coloring">
+            <span>⭐</span> Selesai Mewarnai
+          </button>
         </div>
       </div>
     </section>
 
     <!-- 7. SOUND / MUSIC GAME SCREEN -->
     <section class="screen-view" id="screen-music">
-      <div id="music-game-container" style="width: 100%;">
-        <!-- Rendered via game.js -->
+      <div class="glow-card music-card">
+        <h2>🥁 Tebak Suara Alat Musik Tradisional</h2>
+        <p>Tekan tombol di bawah untuk mendengarkan bunyi musiknya, lalu pilih gambarnya!</p>
+
+        <button class="btn-play-sound" id="btn-trigger-music-sound">
+          <span>🔊 Putar Suara Musik</span>
+        </button>
+
+        <div class="music-options-grid" id="music-game-container">
+          <!-- Dynamically Rendered via game.js -->
+        </div>
       </div>
     </section>
 
     <!-- 8. SIMPLE QUIZ SCREEN -->
     <section class="screen-view" id="screen-quiz">
       <div id="quiz-game-container" style="width: 100%;">
-        <!-- Rendered via quiz.js -->
+        <!-- Dynamically Rendered via quiz.js -->
       </div>
     </section>
 
     <!-- 9. MY BADGES SCREEN -->
     <section class="screen-view" id="screen-badges">
       <div class="glow-card">
-        <h2>🏆 Koleksi Lencana Budayaku</h2>
-        <p>Kumpulkan semua lencana hebat dengan menyelesaikan petualangan!</p>
-        
-        <div class="badges-grid" id="badges-grid-container">
-          <!-- Rendered via app.js -->
-        </div>
+        <h2>🏆 Lencana Sahabat Budaya</h2>
+        <p>Ini adalah koleksi lencana kebanggaan yang telah kamu dapatkan!</p>
 
-        <div style="margin-top: 24px; text-align: center;">
-          <button class="btn-child btn-primary" data-nav="adventure">
-            <span>🗺️</span> Ke Peta Petualangan
-          </button>
+        <div class="badges-grid" id="badges-container">
+          <!-- Dynamically Rendered via app.js -->
         </div>
       </div>
     </section>
@@ -259,13 +225,13 @@
     <section class="screen-view" id="screen-parent-guide">
       <div class="glow-card">
         <h2>👨‍👩‍👧‍👦 Panduan Orang Tua & Guru</h2>
-        <p>Informasi tujuan pembelajaran dan petunjuk pendampingan anak usia 4–6 tahun.</p>
+        <p>Informasi pedagogis dan petunjuk pendampingan belajar untuk anak usia dini (4–6 tahun).</p>
 
         <div class="guide-tabs-bar">
-          <button class="guide-tab-btn active" data-target="guide-tab-1">Tujuan & Usia</button>
-          <button class="guide-tab-btn" data-target="guide-tab-2">Capaian Pembelajaran</button>
-          <button class="guide-tab-btn" data-target="guide-tab-3">Durasi & Tips</button>
-          <button class="guide-tab-btn" data-target="guide-tab-4">Penggunaan Offline</button>
+          <button class="guide-tab-btn active" data-guidetab="1">🎯 Sasaran</button>
+          <button class="guide-tab-btn" data-guidetab="2">🌟 Capaian</button>
+          <button class="guide-tab-btn" data-guidetab="3">⏱️ Tips</button>
+          <button class="guide-tab-btn" data-guidetab="4">📱 Keamanan</button>
         </div>
 
         <div class="guide-panel active" id="guide-tab-1">
@@ -302,6 +268,151 @@
       </div>
     </section>
 
+    <!-- 11. ADMIN LOGIN SCREEN -->
+    <section class="screen-view" id="screen-admin-login">
+      <div class="glow-card admin-login-card">
+        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 8px;">🔐</div>
+        <h2 style="text-align: center; color: var(--primary-purple);">Login Dashboard Admin</h2>
+        <p style="text-align: center; margin-bottom: 20px; color: var(--text-muted);">Masuk untuk mengelola cerita, kuis, dan materi pembelajaran Si Reog.</p>
+        
+        <form id="form-admin-login" class="admin-form">
+          <div class="form-group">
+            <label for="admin-username">Username Admin:</label>
+            <input type="text" id="admin-username" class="form-input" placeholder="Masukkan username" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="admin-password">Password Admin:</label>
+            <input type="password" id="admin-password" class="form-input" placeholder="Masukkan password" required autocomplete="current-password">
+          </div>
+          <div id="admin-login-msg" class="admin-msg-box"></div>
+          <div style="margin-top: 14px; display: flex; justify-content: center;">
+            <button type="submit" class="btn-child btn-primary" style="width: 100%;">
+              <span>🔑</span>
+              <span>MASUK DASHBOARD</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="admin-login-hint">
+          <span>💡 Username bawaan: <b>admin</b> | Password bawaan: <b>admin123</b></span>
+        </div>
+
+        <div style="margin-top: 16px; text-align: center;">
+          <button class="btn-child btn-secondary btn-sm" data-nav="home">
+            <span>🏠</span> Kembali ke Beranda
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. ADMIN DASHBOARD SCREEN -->
+    <section class="screen-view" id="screen-admin-dashboard">
+      <div class="glow-card admin-dashboard-card">
+        <div class="admin-dash-header">
+          <div>
+            <h2>🛠️ Dashboard Pengelola Konten</h2>
+            <p>Kelola seluruh isi cerita, kuis, dan materi edukasi secara langsung.</p>
+          </div>
+          <button class="btn-child btn-accent btn-sm" id="btn-admin-logout">
+            <span>🚪</span> Keluar Admin
+          </button>
+        </div>
+
+        <!-- Dashboard Navigation Tabs -->
+        <div class="admin-tabs-bar">
+          <button class="admin-tab-btn active" data-tab="overview">📊 Ringkasan</button>
+          <button class="admin-tab-btn" data-tab="stories">📖 Kelola Cerita</button>
+          <button class="admin-tab-btn" data-tab="quizzes">❓ Kelola Kuis</button>
+          <button class="admin-tab-btn" data-tab="learn">💡 Kelola Materi</button>
+          <button class="admin-tab-btn" data-tab="settings">⚙️ Akun & Reset</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div class="admin-tab-panel active" id="tab-overview">
+          <div class="admin-stats-grid">
+            <div class="stat-box">
+              <span class="stat-num" id="stat-stories-count">0</span>
+              <span class="stat-label">Adegan Cerita</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-quizzes-count">0</span>
+              <span class="stat-label">Soal Kuis</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-learn-count">0</span>
+              <span class="stat-label">Kartu Materi</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-user-stars">0</span>
+              <span class="stat-label">Bintang User</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Stories Management -->
+        <div class="admin-tab-panel" id="tab-stories">
+          <div class="admin-action-header">
+            <h3>📖 Daftar Adegan Cerita</h3>
+            <button class="btn-child btn-primary btn-sm" id="btn-add-story-modal">➕ Tambah Cerita Baru</button>
+          </div>
+          <div class="admin-item-list" id="admin-stories-list"></div>
+        </div>
+
+        <!-- Tab 3: Quizzes Management -->
+        <div class="admin-tab-panel" id="tab-quizzes">
+          <div class="admin-action-header">
+            <h3>❓ Daftar Soal Kuis</h3>
+            <button class="btn-child btn-primary btn-sm" id="btn-add-quiz-modal">➕ Tambah Soal Kuis</button>
+          </div>
+          <div class="admin-item-list" id="admin-quizzes-list"></div>
+        </div>
+
+        <!-- Tab 4: Learn Cards Management -->
+        <div class="admin-tab-panel" id="tab-learn">
+          <div class="admin-action-header">
+            <h3>💡 Daftar Materi Belajar</h3>
+            <button class="btn-child btn-primary btn-sm" id="btn-add-learn-modal">➕ Tambah Kartu Materi</button>
+          </div>
+          <div class="admin-item-list" id="admin-learn-list"></div>
+        </div>
+
+        <!-- Tab 5: Settings & Reset -->
+        <div class="admin-tab-panel" id="tab-settings">
+          <div class="settings-sections">
+            <div class="settings-box">
+              <h3>🔒 Ganti Password Admin</h3>
+              <form id="form-change-password" class="admin-form">
+                <div class="form-group">
+                  <label>Username Baru:</label>
+                  <input type="text" id="change-username" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label>Password Baru:</label>
+                  <input type="password" id="change-password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn-child btn-secondary btn-sm" style="width: 100%;">Simpan Perubahan Akun</button>
+              </form>
+            </div>
+
+            <div class="settings-box danger-zone">
+              <h3>⚠️ Zone Reset Data</h3>
+              <p>Kembalikan isi konten ke awal pabrikan atau reset progres pemain.</p>
+              <div class="btn-group-column">
+                <button class="btn-child btn-accent btn-sm" id="btn-reset-user-progress">Reset Progres Bintang User</button>
+                <button class="btn-child btn-danger btn-sm" id="btn-reset-content-default">Reset Seluruh Konten ke Default</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+          <button class="btn-child btn-primary" data-nav="home">
+            <span>🏠</span> Kembali ke Beranda
+          </button>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Victory Celebration Modal -->
@@ -316,11 +427,30 @@
     </div>
   </div>
 
+  <!-- Admin Edit Modal Overlay -->
+  <div class="modal-overlay" id="admin-edit-modal">
+    <div class="modal-card admin-modal-card">
+      <h3 class="modal-title" id="admin-modal-title">Edit Konten</h3>
+      <form id="form-admin-edit" class="admin-form" style="width: 100%;">
+        <input type="hidden" id="edit-item-type">
+        <input type="hidden" id="edit-item-id">
+        
+        <div id="edit-fields-container"></div>
+        
+        <div class="modal-btn-row">
+          <button type="button" class="btn-child btn-secondary btn-sm" id="btn-cancel-admin-edit">Batal</button>
+          <button type="submit" class="btn-child btn-primary btn-sm">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- JavaScript Scripts -->
   <script src="js/storage.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/game.js"></script>
   <script src="js/quiz.js"></script>
+  <script src="js/admin.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
