@@ -1,6 +1,12 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/index.html?screen=admin"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

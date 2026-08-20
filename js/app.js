@@ -17,7 +17,18 @@ class AppController {
     this.renderAdventureMap();
     this.renderBadges();
     this.renderLearnCards();
-    this.showScreen('home');
+
+    // Check URL query parameters or pathname for direct Admin route
+    const urlParams = new URLSearchParams(window.location.search);
+    const screenParam = urlParams.get('screen');
+    const isPathAdmin = window.location.pathname.endsWith('/admin') || window.location.pathname.endsWith('/admin.html') || window.location.hash === '#admin';
+
+    if (screenParam === 'admin' || isPathAdmin) {
+      this.showScreen('admin');
+    } else {
+      this.showScreen('home');
+    }
+
     if (window.appAdmin) window.appAdmin.init();
   }
 
