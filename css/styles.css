@@ -513,6 +513,12 @@ body {
     box-shadow: 0 0 0 4px rgba(131, 56, 236, 0.2);
 }
 
+.name-input-group input.input-error-shake {
+    border-color: var(--primary-red) !important;
+    box-shadow: 0 0 0 4px rgba(255, 89, 100, 0.3) !important;
+    animation: lockShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
 /* ==========================================================================
    ADVENTURE MAP HUB
    ========================================================================== */

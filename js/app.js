@@ -376,12 +376,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const nameInput = document.getElementById('player-name-input');
+        if (nameInput) {
+            nameInput.value = (gameState.playerName && gameState.playerName !== 'Sahabat') ? gameState.playerName : '';
+            nameInput.addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                gameState.playerName = val || '';
+                if (val) {
+                    nameInput.classList.remove('input-error-shake');
+                }
+                updateUIState();
+            });
+        }
+
         if (startBtn) {
             const btnSpan = startBtn.querySelector('span');
             if (btnSpan) {
                 btnSpan.textContent = hasSavedData ? '🚀 Lanjutkan Petualangan!' : '🚀 Mulai Petualangan!';
             }
             startBtn.onclick = () => {
+                const inputVal = nameInput ? nameInput.value.trim() : '';
+                const currentName = inputVal || (gameState.playerName !== 'Sahabat' ? gameState.playerName : '');
+
+                if (!currentName) {
+                    playSound('click');
+                    if (nameInput) {
+                        nameInput.classList.add('input-error-shake');
+                        nameInput.focus();
+                        setTimeout(() => nameInput.classList.remove('input-error-shake'), 600);
+                    }
+                    showToast('✏️ Tuliskan nama panggilanmu terlebih dahulu ya!');
+                    return;
+                }
+
+                gameState.playerName = currentName;
                 playSound('star');
                 showScreen('map');
             };
@@ -404,15 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameState.avatarId = card.getAttribute('data-avatar-id');
                     updateUIState();
                 });
-            });
-        }
-
-        const nameInput = document.getElementById('player-name-input');
-        if (nameInput) {
-            nameInput.value = gameState.playerName !== 'Sahabat' ? gameState.playerName : '';
-            nameInput.addEventListener('input', (e) => {
-                gameState.playerName = e.target.value.trim() || 'Sahabat';
-                updateUIState();
             });
         }
     }
