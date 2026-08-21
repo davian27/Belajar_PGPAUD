@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (type === 'default') {
             config.backsoundUrl = 'assets/backsound.mp3';
-            updateAudioPreview(config.backsoundUrl);
+            saveConfig();
+            updateAudioPreview(config.backsoundUrl, true);
         }
     };
 
@@ -134,7 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = (event) => {
                 config.backsoundUrl = event.target.result;
                 config.backsoundSource = 'upload';
-                updateAudioPreview(config.backsoundUrl);
+                saveConfig();
+                updateAudioPreview(config.backsoundUrl, true);
             };
             reader.readAsDataURL(file);
         }
@@ -145,12 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
     audioUrlInput.oninput = () => {
         config.backsoundUrl = audioUrlInput.value.trim();
         config.backsoundSource = 'url';
-        updateAudioPreview(config.backsoundUrl);
+        saveConfig();
+        updateAudioPreview(config.backsoundUrl, true);
     };
 
-    function updateAudioPreview(src) {
+    function updateAudioPreview(src, autoPlay = false) {
         if (audioPreview) {
             audioPreview.src = src;
+            if (autoPlay) {
+                audioPreview.play().catch(e => console.log('Playback error / gesture required:', e));
+            }
         }
     }
 
@@ -160,7 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         config.backsoundUrl = 'assets/backsound.mp3';
         audioSourceSelect.value = 'default';
         toggleAudioInputs('default');
-        updateAudioPreview('assets/backsound.mp3');
+        saveConfig();
+        updateAudioPreview('assets/backsound.mp3', true);
         showToast('Lagu backsound dikembalikan ke bawaan.');
     };
 

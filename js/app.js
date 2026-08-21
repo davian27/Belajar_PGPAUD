@@ -54,14 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return {};
     }
 
+    let currentMusicSrc = '';
+
     function initBgMusic() {
         const cfg = getConfig();
         const musicSrc = cfg.backsoundUrl || 'assets/backsound.mp3';
-        if (!bgMusic || bgMusic.src !== musicSrc) {
-            if (bgMusic) bgMusic.pause();
+        if (!bgMusic || currentMusicSrc !== musicSrc) {
+            if (bgMusic) {
+                bgMusic.pause();
+                bgMusic = null;
+            }
             bgMusic = new Audio(musicSrc);
             bgMusic.loop = true;
             bgMusic.volume = 0.25; // Soft background music volume
+            currentMusicSrc = musicSrc;
         }
     }
 
