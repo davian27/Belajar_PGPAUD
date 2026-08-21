@@ -1,456 +1,634 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jelajah Budaya Nusantara – Petualangan Si Reog (PAUD/ECE)</title>
-  <meta name="description" content="Aplikasi edukasi web interaktif untuk anak usia dini 4-6 tahun mengenal kebudayaan Reog Ponorogo Indonesia.">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EMPATHY QUEST — Misi Sahabat Cerdas dan Peduli</title>
+    <meta name="description" content="Game edukatif interaktif berbasis HTML/Web untuk anak usia dini (5–6 tahun) - integrasi empati, literasi, numerasi, komunikasi positif, dan pencegahan perundungan.">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- Top App Header Navigation -->
-  <header class="app-header">
-    <div class="header-left">
-      <button class="btn-child btn-primary" data-nav="home" aria-label="Ke Halaman Utama">
-        <span>🏠</span>
-        <span>Beranda</span>
-      </button>
-      <div class="app-title-mini">
-        <span>🦁</span> Petualangan Si Reog
-      </div>
-    </div>
-    
-    <div class="header-right">
-      <div class="star-counter-pill">
-        <span>⭐</span>
-        <span id="header-star-count">0</span>
-      </div>
-      <button class="btn-audio-toggle" id="btn-mute-toggle">
-        🔊 Audio On
-      </button>
-      <button class="btn-audio-toggle" data-nav="admin" title="Dashboard Admin Content Manager" style="border-color: var(--primary-purple); color: var(--primary-purple);">
-        🔐 Admin
-      </button>
-    </div>
-  </header>
-
-  <!-- Global Mascot Dialogue Bar -->
-  <div class="mascot-global-bar">
-    <img src="assets/images/mascot.svg" alt="Si Reog Mascot" class="mascot-avatar-small">
-    <div class="mascot-speech-bubble" id="mascot-dialog-text">
-      Halo, Teman! Selamat datang di Petualangan Si Reog!
-    </div>
-  </div>
-
-  <!-- Main Viewport Container -->
-  <main class="app-viewport">
-
-    <!-- 1. HOME SCREEN -->
-    <section class="screen-view active" id="screen-home">
-      <div class="home-hero-container">
-        <img src="assets/images/mascot.svg" alt="Si Reog Mascot Hero" class="home-mascot-hero">
-        <h1 class="home-title">Jelajah Budaya Nusantara<br>Petualangan Si Reog</h1>
-        <p class="home-subtitle">Belajar Budaya Indonesia Bersama Si Reog dengan Ceria!</p>
-
-        <div class="home-menu-grid">
-          <button class="btn-child btn-primary" data-nav="adventure">
-            <span>🗺️</span>
-            <span>MULAI PETUALANGAN</span>
-          </button>
-          <button class="btn-child btn-secondary" data-nav="learn">
-            <span>📖</span>
-            <span>BELAJAR BERSAMA</span>
-          </button>
-          <button class="btn-child btn-accent" data-nav="badges">
-            <span>🏆</span>
-            <span>LENCANAKU</span>
-          </button>
-          <button class="btn-child btn-audio-toggle" data-nav="parent-guide">
-            <span>👨‍👩‍👧‍👦</span>
-            <span>UNTUK ORANG TUA / GURU</span>
-          </button>
-          <button class="btn-child btn-audio-toggle" data-nav="admin" style="border-color: var(--primary-purple); color: var(--primary-purple);">
-            <span>🔐</span>
-            <span>DASHBOARD ADMIN (KONTEN)</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. ADVENTURE MAP SCREEN -->
-    <section class="screen-view" id="screen-adventure">
-      <div class="glow-card">
-        <h2>🗺️ Peta Petualangan Nusantara</h2>
-        <p>Selesaikan setiap misi untuk mendapatkan bintang dan lencana budaya!</p>
-        <div class="adventure-map-grid" id="adventure-nodes-container">
-          <!-- Dynamically Rendered via app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. LEARN ABOUT REOG SCREEN -->
-    <section class="screen-view" id="screen-learn">
-      <div class="glow-card">
-        <h2>📖 Kenalan Dengan Reog Ponorogo</h2>
-        <p>Yuk, kenali fakta dan kebudayaan Reog Ponorogo berikut ini!</p>
-        
-        <div class="learn-cards-grid" id="learn-cards-container">
-          <!-- Dynamically Rendered via app.js -->
-        </div>
-
-        <div style="margin-top: 24px; text-align: center;">
-          <button class="btn-child btn-primary" data-nav="adventure">
-            <span>🗺️</span> Kembali ke Peta
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. INTERACTIVE STORY SCREEN -->
-    <section class="screen-view" id="screen-story">
-      <div class="glow-card story-card">
-        <div class="story-icon" id="story-scene-icon">🎡</div>
-        <h2 class="story-title" id="story-scene-title">Scene 1: Festival Budaya</h2>
-        <p class="story-desc" id="story-scene-desc">Budi dan Sisi pergi ke Festival Budaya Nusantara bersama ibu dan ayah.</p>
-
-        <div class="story-progress" id="story-scene-progress">Langkah 1 dari 7</div>
-
-        <div class="story-controls-bar">
-          <button class="btn-child btn-secondary" id="btn-prev-story">
-            <span>⬅️</span> Sebelum
-          </button>
-
-          <button class="btn-child btn-primary" id="btn-next-story">
-            <span>Lanjut ➡️</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. PUZZLE GAME SCREEN -->
-    <section class="screen-view" id="screen-puzzle">
-      <div class="glow-card puzzle-layout">
-        <h2>🧩 Menyusun Topeng Si Reog</h2>
-        <p>Tarik atau tekan kepingan gambar di bawah ke tempat kotak yang tepat!</p>
-
-        <div class="puzzle-grid" id="puzzle-game-container">
-          <!-- Dynamically Rendered via game.js -->
-        </div>
-
-        <div class="puzzle-pool" id="puzzle-pool-container">
-          <!-- Dynamically Rendered via game.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. COLORING GAME SCREEN -->
-    <section class="screen-view" id="screen-coloring">
-      <div class="glow-card coloring-container">
-        <h2>🎨 Mewarnai Topeng Singo Barong</h2>
-        <p>Pilih alat Ember Cat / Kuas / Penghapus dan warnai dengan kreasi bahagiamu!</p>
-
-        <div class="coloring-tools-bar">
-          <div class="tool-group">
-            <span class="tool-label">Mode Alat:</span>
-            <button class="btn-child btn-audio-toggle tool-mode-btn active" data-mode="fill">🪣 Cat Ember</button>
-            <button class="btn-child btn-audio-toggle tool-mode-btn" data-mode="brush">🖌️ Kuas</button>
-            <button class="btn-child btn-audio-toggle tool-mode-btn" data-mode="eraser">🧹 Penghapus</button>
-          </div>
-
-          <div class="tool-group">
-            <span class="tool-label">Ukuran:</span>
-            <button class="btn-size-circle size-btn" data-size="small"><span class="size-dot dot-sm"></span> Kecil</button>
-            <button class="btn-size-circle size-btn active" data-size="medium"><span class="size-dot dot-md"></span> Sedang</button>
-            <button class="btn-size-circle size-btn" data-size="large"><span class="size-dot dot-lg"></span> Besar</button>
-          </div>
-
-          <button class="btn-child btn-secondary" id="btn-clear-coloring">
-            <span>🔄</span> Ulangi
-          </button>
-        </div>
-
-        <div class="coloring-canvas-wrap">
-          <canvas id="coloring-canvas" width="600" height="450"></canvas>
-        </div>
-
-        <div class="color-palette-bar" id="color-palette-container">
-          <!-- Dynamically Rendered via game.js -->
-        </div>
-
-        <div style="margin-top: 12px;">
-          <button class="btn-child btn-primary" id="btn-finish-coloring">
-            <span>⭐</span> Selesai Mewarnai
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. SOUND / MUSIC GAME SCREEN -->
-    <section class="screen-view" id="screen-music">
-      <div class="glow-card music-card">
-        <h2>🥁 Tebak Suara Alat Musik Tradisional</h2>
-        <p>Tekan tombol di bawah untuk mendengarkan bunyi musiknya, lalu pilih gambarnya!</p>
-
-        <button class="btn-play-sound" id="btn-trigger-music-sound">
-          <span>🔊 Putar Suara Musik</span>
-        </button>
-
-        <div class="music-options-grid" id="music-game-container">
-          <!-- Dynamically Rendered via game.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. SIMPLE QUIZ SCREEN -->
-    <section class="screen-view" id="screen-quiz">
-      <div id="quiz-game-container" style="width: 100%;">
-        <!-- Dynamically Rendered via quiz.js -->
-      </div>
-    </section>
-
-    <!-- 9. MY BADGES SCREEN -->
-    <section class="screen-view" id="screen-badges">
-      <div class="glow-card">
-        <h2>🏆 Lencana Sahabat Budaya</h2>
-        <p>Ini adalah koleksi lencana kebanggaan yang telah kamu dapatkan!</p>
-
-        <div class="badges-grid" id="badges-container">
-          <!-- Dynamically Rendered via app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 10. PARENT / TEACHER GUIDE SCREEN -->
-    <section class="screen-view" id="screen-parent-guide">
-      <div class="glow-card">
-        <h2>👨‍👩‍👧‍👦 Panduan Orang Tua & Guru</h2>
-        <p>Informasi pedagogis dan petunjuk pendampingan belajar untuk anak usia dini (4–6 tahun).</p>
-
-        <div class="guide-tabs-bar">
-          <button class="guide-tab-btn active" data-guidetab="1">🎯 Sasaran</button>
-          <button class="guide-tab-btn" data-guidetab="2">🌟 Capaian</button>
-          <button class="guide-tab-btn" data-guidetab="3">⏱️ Tips</button>
-          <button class="guide-tab-btn" data-guidetab="4">📱 Keamanan</button>
-        </div>
-
-        <div class="guide-panel active" id="guide-tab-1">
-          <h3>🎯 Tujuan Aplikasi & Sasaran Usia</h3>
-          <p>Aplikasi ini dirancang khusus untuk anak usia 4–6 tahun (PAUD/TK) guna mengenalkan kebudayaan tradisional Reog Ponorogo dari Jawa Timur melalui aktivitas digital interaktif yang aman, menyenangkan, dan berorientasi visual.</p>
-        </div>
-
-        <div class="guide-panel" id="guide-tab-2">
-          <h3>🌟 Capaian Pembelajaran & Kompetensi Global</h3>
-          <ul>
-            <li><strong>Mengenal Kebudayaan Lokal:</strong> Menumbuhkan rasa cinta tanah air dan kebanggaan akan warisan budaya Nusantara.</li>
-            <li><strong>Kreativitas & Problem Solving:</strong> Melatih keterampilan motorik halus dan logika melalui puzzle dan mewarnai.</li>
-            <li><strong>Mendengar & Komunikasi:</strong> Mengembangkan daya simak audio dan pemahaman bahasa.</li>
-            <li><strong>Kesadaran Kebinekaan Global:</strong> Mengapresiasi keberagaman budaya sejak dini.</li>
-          </ul>
-        </div>
-
-        <div class="guide-panel" id="guide-tab-3">
-          <h3>⏱️ Durasi Sesi & Tips Pendampingan</h3>
-          <p><strong>Rekomendasi Durasi Belajar:</strong> 10–20 menit per sesi.</p>
-          <p>Disarankan orang tua atau guru mendampingi anak untuk berdialog aktif saat menyimak cerita dan mengenali alat musik tradisional.</p>
-        </div>
-
-        <div class="guide-panel" id="guide-tab-4">
-          <h3>📱 Penggunaan Offline & Keamanan Anak</h3>
-          <p>Aplikasi ini berjalan 100% secara offline tanpa koneksi internet. Bebas dari iklan, tanpa pengumpulan data pribadi, dan tanpa fitur obrolan luar.</p>
-        </div>
-
-        <div style="margin-top: 24px; text-align: center;">
-          <button class="btn-child btn-primary" data-nav="home">
-            <span>🏠</span> Kembali ke Beranda
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 11. ADMIN LOGIN SCREEN -->
-    <section class="screen-view" id="screen-admin-login">
-      <div class="glow-card admin-login-card">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 8px;">🔐</div>
-        <h2 style="text-align: center; color: var(--primary-purple);">Login Dashboard Admin</h2>
-        <p style="text-align: center; margin-bottom: 20px; color: var(--text-muted);">Masuk untuk mengelola cerita, kuis, dan materi pembelajaran Si Reog.</p>
-        
-        <form id="form-admin-login" class="admin-form">
-          <div class="form-group">
-            <label for="admin-username">Username Admin:</label>
-            <input type="text" id="admin-username" class="form-input" placeholder="Masukkan username" required autocomplete="username">
-          </div>
-          <div class="form-group">
-            <label for="admin-password">Password Admin:</label>
-            <input type="password" id="admin-password" class="form-input" placeholder="Masukkan password" required autocomplete="current-password">
-          </div>
-          <div id="admin-login-msg" class="admin-msg-box"></div>
-          <div style="margin-top: 14px; display: flex; justify-content: center;">
-            <button type="submit" class="btn-child btn-primary" style="width: 100%;">
-              <span>🔑</span>
-              <span>MASUK DASHBOARD</span>
-            </button>
-          </div>
-        </form>
-
-        <div class="admin-login-hint">
-          <span>💡 Username bawaan: <b>admin</b> | Password bawaan: <b>admin123</b></span>
-        </div>
-
-        <div style="margin-top: 16px; text-align: center;">
-          <button class="btn-child btn-secondary btn-sm" data-nav="home">
-            <span>🏠</span> Kembali ke Beranda
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 12. ADMIN DASHBOARD SCREEN -->
-    <section class="screen-view" id="screen-admin-dashboard">
-      <div class="glow-card admin-dashboard-card">
-        <div class="admin-dash-header">
-          <div>
-            <h2>🛠️ Dashboard Pengelola Konten</h2>
-            <p>Kelola seluruh isi cerita, kuis, dan materi edukasi secara langsung.</p>
-          </div>
-          <button class="btn-child btn-accent btn-sm" id="btn-admin-logout">
-            <span>🚪</span> Keluar Admin
-          </button>
-        </div>
-
-        <!-- Dashboard Navigation Tabs -->
-        <div class="admin-tabs-bar">
-          <button class="admin-tab-btn active" data-tab="overview">📊 Ringkasan</button>
-          <button class="admin-tab-btn" data-tab="stories">📖 Kelola Cerita</button>
-          <button class="admin-tab-btn" data-tab="quizzes">❓ Kelola Kuis</button>
-          <button class="admin-tab-btn" data-tab="learn">💡 Kelola Materi</button>
-          <button class="admin-tab-btn" data-tab="settings">⚙️ Akun & Reset</button>
-        </div>
-
-        <!-- Tab 1: Overview -->
-        <div class="admin-tab-panel active" id="tab-overview">
-          <div class="admin-stats-grid">
-            <div class="stat-box">
-              <span class="stat-num" id="stat-stories-count">0</span>
-              <span class="stat-label">Adegan Cerita</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-num" id="stat-quizzes-count">0</span>
-              <span class="stat-label">Soal Kuis</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-num" id="stat-learn-count">0</span>
-              <span class="stat-label">Kartu Materi</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-num" id="stat-user-stars">0</span>
-              <span class="stat-label">Bintang User</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 2: Stories Management -->
-        <div class="admin-tab-panel" id="tab-stories">
-          <div class="admin-action-header">
-            <h3>📖 Daftar Adegan Cerita</h3>
-            <button class="btn-child btn-primary btn-sm" id="btn-add-story-modal">➕ Tambah Cerita Baru</button>
-          </div>
-          <div class="admin-item-list" id="admin-stories-list"></div>
-        </div>
-
-        <!-- Tab 3: Quizzes Management -->
-        <div class="admin-tab-panel" id="tab-quizzes">
-          <div class="admin-action-header">
-            <h3>❓ Daftar Soal Kuis</h3>
-            <button class="btn-child btn-primary btn-sm" id="btn-add-quiz-modal">➕ Tambah Soal Kuis</button>
-          </div>
-          <div class="admin-item-list" id="admin-quizzes-list"></div>
-        </div>
-
-        <!-- Tab 4: Learn Cards Management -->
-        <div class="admin-tab-panel" id="tab-learn">
-          <div class="admin-action-header">
-            <h3>💡 Daftar Materi Belajar</h3>
-            <button class="btn-child btn-primary btn-sm" id="btn-add-learn-modal">➕ Tambah Kartu Materi</button>
-          </div>
-          <div class="admin-item-list" id="admin-learn-list"></div>
-        </div>
-
-        <!-- Tab 5: Settings & Reset -->
-        <div class="admin-tab-panel" id="tab-settings">
-          <div class="settings-sections">
-            <div class="settings-box">
-              <h3>🔒 Ganti Password Admin</h3>
-              <form id="form-change-password" class="admin-form">
-                <div class="form-group">
-                  <label>Username Baru:</label>
-                  <input type="text" id="change-username" class="form-input" required>
+    <div id="app" class="game-container">
+        <!-- TOP NAVBAR / HEADER -->
+        <header class="game-header">
+            <div class="header-left">
+                <button id="btn-home-map" class="nav-btn icon-btn" title="Peta Misi" aria-label="Peta Misi">
+                    <span class="btn-icon">🗺️</span>
+                    <span class="btn-text">Peta</span>
+                </button>
+                <div class="player-pill">
+                    <div id="nav-avatar-icon" class="nav-avatar"></div>
+                    <span id="nav-player-name" class="player-name-text">Sahabat</span>
                 </div>
-                <div class="form-group">
-                  <label>Password Baru:</label>
-                  <input type="password" id="change-password" class="form-input" required>
+            </div>
+
+            <!-- STAR COUNTER -->
+            <div class="star-counter-bar">
+                <span class="star-label">Bintang:</span>
+                <div class="stars-flex" id="header-stars">
+                    <span class="star-icon star-empty" id="star-1">★</span>
+                    <span class="star-icon star-empty" id="star-2">★</span>
+                    <span class="star-icon star-empty" id="star-3">★</span>
+                    <span class="star-icon star-empty" id="star-4">★</span>
                 </div>
-                <button type="submit" class="btn-child btn-secondary btn-sm" style="width: 100%;">Simpan Perubahan Akun</button>
-              </form>
             </div>
 
-            <div class="settings-box danger-zone">
-              <h3>⚠️ Zone Reset Data</h3>
-              <p>Kembalikan isi konten ke awal pabrikan atau reset progres pemain.</p>
-              <div class="btn-group-column">
-                <button class="btn-child btn-accent btn-sm" id="btn-reset-user-progress">Reset Progres Bintang User</button>
-                <button class="btn-child btn-danger btn-sm" id="btn-reset-content-default">Reset Seluruh Konten ke Default</button>
-              </div>
+            <div class="header-right">
+                <button id="btn-audio-toggle" class="nav-btn icon-btn" title="Suara Efek" aria-label="Toggle Suara">
+                    <span id="audio-icon">🔊</span>
+                </button>
+                <button id="btn-bag" class="nav-btn icon-btn" title="Tas Sahabat" aria-label="Tas Sahabat">
+                    <span>🎒</span>
+                    <span class="btn-text">Tas</span>
+                </button>
+                <button id="btn-parent-guide" class="nav-btn icon-btn parent-btn" title="Panduan Orang Tua/Guru" aria-label="Panduan Orang Tua">
+                    <span>👨‍👩‍👧</span>
+                    <span class="btn-text">Pendamping</span>
+                </button>
             </div>
-          </div>
-        </div>
+        </header>
 
-        <div style="margin-top: 24px; text-align: center;">
-          <button class="btn-child btn-primary" data-nav="home">
-            <span>🏠</span> Kembali ke Beranda
-          </button>
-        </div>
-      </div>
-    </section>
+        <!-- MAIN GAME STAGE CONTAINER -->
+        <main id="game-stage" class="game-stage">
 
-  </main>
+            <!-- ========================================== -->
+            <!-- 1. SCREEN: PROLOG / WELCOME & AVATAR SELECT -->
+            <!-- ========================================== -->
+            <section id="screen-prolog" class="game-screen active">
+                <div class="prolog-card glass-panel">
+                    <div class="rainbow-banner">
+                        <svg class="rainbow-svg" viewBox="0 0 500 260" preserveAspectRatio="xMidYMid meet">
+                            <path d="M 30,250 A 220,220 0 0,1 470,250" fill="none" stroke="#FF5964" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M 50,250 A 200,200 0 0,1 450,250" fill="none" stroke="#FFD166" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M 70,250 A 180,180 0 0,1 430,250" fill="none" stroke="#06D6A0" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M 90,250 A 160,160 0 0,1 410,250" fill="none" stroke="#118AB2" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M 110,250 A 140,140 0 0,1 390,250" fill="none" stroke="#8338EC" stroke-width="14" stroke-linecap="round"/>
+                        </svg>
+                        <h1 class="game-title">EMPATHY QUEST</h1>
+                        <p class="game-subtitle">Misi Sahabat Cerdas & Peduli</p>
+                    </div>
 
-  <!-- Victory Celebration Modal -->
-  <div class="modal-overlay" id="victory-modal">
-    <div class="modal-card">
-      <div style="font-size: 4rem;">🎉</div>
-      <h3 class="modal-title" id="victory-title">Hebat! Kamu Berhasil!</h3>
-      <p class="modal-desc" id="victory-desc">Kamu menyelesaikan permainan dengan sangat baik!</p>
-      <button class="btn-child btn-primary modal-close-btn">
-        <span>⭐</span> Lanjutkan Petualangan
-      </button>
+                    <!-- MASCOT WELCOME -->
+                    <div class="mascot-intro-box">
+                        <div class="mascot-avatar" id="kancil-prolog"></div>
+                        <div class="speech-bubble">
+                            <p id="prolog-speech">Halo, Sahabat! Selamat datang di <strong>Taman Pelangi Sahabat</strong>! Di sini kita akan mengumpulkan 5 Lencana Kekuatan: Empati, Literasi, Numerasi, Kerja Sama, dan Berani Bicara Baik!</p>
+                        </div>
+                    </div>
+
+                    <!-- AVATAR SELECTION -->
+                    <div class="avatar-selection-section">
+                        <h2>Pilih Sahabatmu:</h2>
+                        <div class="avatar-grid" id="avatar-picker">
+                            <!-- 4 Avatars inserted by JS -->
+                        </div>
+
+                        <div class="name-input-group">
+                            <label for="player-name-input">Nama Panggilanmu:</label>
+                            <input type="text" id="player-name-input" maxlength="12" placeholder="Tulis namamu disini..." autocomplete="off">
+                        </div>
+
+                        <button id="btn-start-game" class="primary-btn btn-lg bounce-hover">
+                            <span>🚀 Mulai Petualangan!</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 2. SCREEN: ADVENTURE MAP HUB -->
+            <!-- ========================================== -->
+            <section id="screen-map" class="game-screen">
+                <div class="map-container">
+                    <div class="map-header">
+                        <h2>Taman Pelangi Sahabat</h2>
+                        <p>Pilih gerbang misi untuk membantu teman-temanmu!</p>
+                    </div>
+
+                    <div class="map-playground">
+                        <!-- DECORATIVE BG ELEMENTS -->
+                        <div class="cloud cloud-1">☁️</div>
+                        <div class="cloud cloud-2">☁️</div>
+                        <div class="tree tree-left">🌳</div>
+                        <div class="tree tree-right">🌲</div>
+                        <div class="rainbow-bg-small">🌈</div>
+
+                        <!-- 4 MISSION GATES -->
+                        <div class="map-gates-grid">
+                            <!-- GATE 1 -->
+                            <div class="mission-gate-card" id="gate-mission-1" data-mission="1">
+                                <div class="gate-status-badge" id="gate-star-1">★ Misi 1</div>
+                                <div class="gate-icon-frame red-theme">
+                                    <span class="gate-emoji">❤️</span>
+                                </div>
+                                <h3>Baca Perasaanku</h3>
+                                <p>Kenali emosi Dina & tunjukkan empati</p>
+                                <button class="primary-btn btn-sm gate-play-btn">Masuk Misi</button>
+                            </div>
+
+                            <!-- GATE 2 -->
+                            <div class="mission-gate-card" id="gate-mission-2" data-mission="2">
+                                <div class="gate-status-badge" id="gate-star-2">★ Misi 2</div>
+                                <div class="gate-icon-frame blue-theme">
+                                    <span class="gate-emoji">🔢</span>
+                                </div>
+                                <h3>Hitung Teman Baik</h3>
+                                <p>Berhitung 1-6 & ajak Tono bermain</p>
+                                <button class="primary-btn btn-sm gate-play-btn">Masuk Misi</button>
+                            </div>
+
+                            <!-- GATE 3 -->
+                            <div class="mission-gate-card" id="gate-mission-3" data-mission="3">
+                                <div class="gate-status-badge" id="gate-star-3">★ Misi 3</div>
+                                <div class="gate-icon-frame yellow-theme">
+                                    <span class="gate-emoji">💬</span>
+                                </div>
+                                <h3>Kata-Kata Sahabat</h3>
+                                <p>Susun kata baik & bantu membela Beni</p>
+                                <button class="primary-btn btn-sm gate-play-btn">Masuk Misi</button>
+                            </div>
+
+                            <!-- GATE 4 -->
+                            <div class="mission-gate-card" id="gate-mission-4" data-mission="4">
+                                <div class="gate-status-badge" id="gate-star-4">★ Misi 4</div>
+                                <div class="gate-icon-frame green-theme">
+                                    <span class="gate-emoji">🤝</span>
+                                </div>
+                                <h3>Bagi dan Bergantian</h3>
+                                <p>Bagi bola adil & susun Papan Giliran</p>
+                                <button class="primary-btn btn-sm gate-play-btn">Masuk Misi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 3. SCREEN: MISSION 1 — BACA PERASAANKU -->
+            <!-- ========================================== -->
+            <section id="screen-mission-1" class="game-screen">
+                <div class="mission-wrapper">
+                    <div class="mission-banner red-banner">
+                        <span>❤️ Misi 1: Baca Perasaanku</span>
+                    </div>
+
+                    <!-- STORY SCENE -->
+                    <div class="story-scene park-bench-scene">
+                        <div class="character-box dina-box">
+                            <div id="dina-avatar-container" class="character-svg-wrap"></div>
+                            <span class="character-name">Dina</span>
+                        </div>
+                        <div class="mascot-speech-row">
+                            <div class="mascot-small-avatar"></div>
+                            <div class="speech-bubble large-speech">
+                                <p id="m1-speech">Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1: EMOTION CHOICE -->
+                    <div id="m1-step-1" class="interaction-block">
+                        <div class="mirror-prompt">
+                            <span>🪞 <strong>Cermin Perasaan:</strong> Coba tiru ekspresi wajah Dina di cermin imajinasimu! Mata redup dan bibir melengkung ke bawah. Seperti apa rasanya?</span>
+                        </div>
+                        <h3>Pilih Kartu Emosi:</h3>
+                        <div class="cards-grid emotion-cards-grid">
+                            <button class="choice-card emotion-card" data-emotion="sedih">
+                                <div class="card-icon">😢</div>
+                                <span class="card-label">Sedih</span>
+                            </button>
+                            <button class="choice-card emotion-card" data-emotion="marah">
+                                <div class="card-icon">😡</div>
+                                <span class="card-label">Marah</span>
+                            </button>
+                            <button class="choice-card emotion-card" data-emotion="kesepian">
+                                <div class="card-icon">😔</div>
+                                <span class="card-label">Kesepian</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: ACTION CHOICE -->
+                    <div id="m1-step-2" class="interaction-block hidden">
+                        <h3>Bagaimana cara kita membantu Dina?</h3>
+                        <div class="cards-grid action-cards-grid">
+                            <button class="choice-card action-card" data-action="invite">
+                                <div class="card-icon">🤝</div>
+                                <span class="card-label">Mengajak Dina bermain bersama</span>
+                            </button>
+                            <button class="choice-card action-card" data-action="toy">
+                                <div class="card-icon">🧸</div>
+                                <span class="card-label">Memberi mainan lalu pergi</span>
+                            </button>
+                            <button class="choice-card action-card" data-action="ignore">
+                                <div class="card-icon">🙈</div>
+                                <span class="card-label">Mengabaikan Dina</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CELEBRATION BLOCK -->
+                    <div id="m1-success-block" class="success-block hidden">
+                        <div class="success-content">
+                            <span class="sparkle-icon">🌟</span>
+                            <h3>Luar Biasa!</h3>
+                            <p>Dina tersenyum bahagia karena kamu mengajaknya bermain bersama! Kamu mendapatkan <strong>Badge Empati</strong>!</p>
+                            <button id="btn-finish-m1" class="primary-btn btn-lg">Lanjut ke Peta Misi 🚀</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 4. SCREEN: MISSION 2 — HITUNG TEMAN BAIK -->
+            <!-- ========================================== -->
+            <section id="screen-mission-2" class="game-screen">
+                <div class="mission-wrapper">
+                    <div class="mission-banner blue-banner">
+                        <span>🔢 Misi 2: Hitung Teman Baik</span>
+                    </div>
+
+                    <!-- SCENE DISPLAY -->
+                    <div class="story-scene playground-count-scene">
+                        <div class="playing-group" id="m2-kids-group"></div>
+                        <div class="lonely-kid-box">
+                            <div id="lonely-kid-avatar" class="character-svg-wrap"></div>
+                            <span class="character-name">Tono</span>
+                        </div>
+                    </div>
+
+                    <div class="mascot-speech-row">
+                        <div class="mascot-small-avatar"></div>
+                        <div class="speech-bubble large-speech">
+                            <p id="m2-speech">Ada berapa teman yang sedang asyik bermain bersama?</p>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1: COUNTING NUMBERS -->
+                    <div id="m2-step-1" class="interaction-block">
+                        <h3>Hitung Jumlah Teman yang Bermain:</h3>
+                        <div class="numbers-grid">
+                            <button class="number-btn" data-num="1">1</button>
+                            <button class="number-btn" data-num="2">2</button>
+                            <button class="number-btn" data-num="3">3</button>
+                            <button class="number-btn" data-num="4">4</button>
+                            <button class="number-btn" data-num="5">5</button>
+                            <button class="number-btn" data-num="6">6</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: INCLUSION QUESTION & SPIN WHEEL -->
+                    <div id="m2-step-2" class="interaction-block hidden">
+                        <div class="story-question-box">
+                            <p class="question-text">Tono masih duduk sendirian. Berapa anak yang perlu diajak agar semua ikut bermain bersama?</p>
+                            <button id="btn-answer-inclusion" class="primary-btn btn-md"><strong>1 Anak (Tono)</strong></button>
+                        </div>
+
+                        <div class="wheel-section hidden" id="wheel-container-m2">
+                            <h3>Ajak Tono Bermain! Putar Roda Ajak Teman:</h3>
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer">▼</div>
+                                <div class="spinning-wheel" id="wheel-element">
+                                    <div class="wheel-segment segment-1">
+                                        <span>🏃 Kejar-kejaran</span>
+                                    </div>
+                                    <div class="wheel-segment segment-2">
+                                        <span>🛝 Ayunan</span>
+                                    </div>
+                                    <div class="wheel-segment segment-3">
+                                        <span>🎨 Menggambar</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btn-spin-wheel" class="primary-btn btn-lg">🎡 Putar Roda!</button>
+                        </div>
+                    </div>
+
+                    <!-- SUCCESS BLOCK -->
+                    <div id="m2-success-block" class="success-block hidden">
+                        <div class="success-content">
+                            <span class="sparkle-icon">🤝</span>
+                            <h3 id="m2-result-title">Semua Bergandengan Tangan!</h3>
+                            <p id="m2-result-text">Sekarang 6 teman bermain bersama dengan tawa riang! Kamu mendapatkan <strong>Badge Numerasi</strong>!</p>
+                            <button id="btn-finish-m2" class="primary-btn btn-lg">Lanjut ke Peta Misi 🚀</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 5. SCREEN: MISSION 3 — KATA-KATA SAHABAT -->
+            <!-- ========================================== -->
+            <section id="screen-mission-3" class="game-screen">
+                <div class="mission-wrapper">
+                    <div class="mission-banner yellow-banner">
+                        <span>💬 Misi 3: Kata-Kata Sahabat</span>
+                    </div>
+
+                    <!-- STORY SCENE -->
+                    <div class="story-scene drawing-conflict-scene">
+                        <div class="beni-drawing-box">
+                            <div id="beni-avatar" class="character-svg-wrap"></div>
+                            <div class="drawing-paper">
+                                🎨 Gambar Unik Beni
+                            </div>
+                        </div>
+                        <div class="teasing-kids-box" id="teasing-kids-container">
+                            <div id="teasing-avatar" class="character-svg-wrap"></div>
+                            <div class="tease-bubble" id="tease-bubble-text">“Gambarmu aneh!”</div>
+                        </div>
+                    </div>
+
+                    <div class="mascot-speech-row">
+                        <div class="mascot-small-avatar"></div>
+                        <div class="speech-bubble large-speech">
+                            <p id="m3-speech">Beni diejek karena gambarnya berbeda. Yuk, susun kata-kata baik untuk membantu dan membela Beni!</p>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1: DRAG & DROP / TAP WORD BUILDER -->
+                    <div id="m3-step-1" class="interaction-block">
+                        <h3>Susun Kalimat Baik:</h3>
+                        
+                        <div class="sentence-drop-zone" id="sentence-target-slots">
+                            <div class="word-slot" data-index="0">_____</div>
+                            <div class="word-slot" data-index="1">_____</div>
+                            <div class="word-slot" data-index="2">_____</div>
+                        </div>
+
+                        <div class="word-bank" id="word-bank-cards">
+                            <div class="word-card" draggable="true" data-word="Jangan">Jangan</div>
+                            <div class="word-card" draggable="true" data-word="ejek">ejek</div>
+                            <div class="word-card" draggable="true" data-word="teman">teman</div>
+                        </div>
+
+                        <div class="btn-row-center">
+                            <button id="btn-check-sentence" class="primary-btn btn-md">Cek Kalimat 👍</button>
+                            <button id="btn-reset-sentence" class="secondary-btn btn-md">Ulangi 🔄</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: SUARA BERANINYA AKU -->
+                    <div id="m3-step-2" class="interaction-block hidden">
+                        <div class="brave-voice-box">
+                            <div class="avatar-hero-speak">
+                                <div id="hero-speak-avatar" class="character-svg-wrap"></div>
+                                <div class="speech-bubble hero-bubble">
+                                    <p>🗣️ <strong>Suara Beraninya Aku:</strong><br>“Jangan ejek teman! Gambarmu sangat unik dan keren, Beni!”</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUCCESS BLOCK -->
+                    <div id="m3-success-block" class="success-block hidden">
+                        <div class="success-content">
+                            <span class="sparkle-icon">🎨</span>
+                            <h3>Perbedaan Itu Indah & Berharga!</h3>
+                            <p>Ejekan memudar! Teman-teman memuji gambar Beni: <em>“Gambarmu keren, Beni!”</em><br>Kamu meraih <strong>Badge Literasi</strong> & <strong>Badge Berani Bicara Baik</strong>!</p>
+                            <button id="btn-finish-m3" class="primary-btn btn-lg">Lanjut ke Peta Misi 🚀</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 6. SCREEN: MISSION 4 — BAGI DAN BERGANTIAN -->
+            <!-- ========================================== -->
+            <section id="screen-mission-4" class="game-screen">
+                <div class="mission-wrapper">
+                    <div class="mission-banner green-banner">
+                        <span>🤝 Misi 4: Bagi dan Bergantian</span>
+                    </div>
+
+                    <div class="mascot-speech-row">
+                        <div class="mascot-small-avatar"></div>
+                        <div class="speech-bubble large-speech">
+                            <p id="m4-speech">Tersedia 6 bola untuk 3 teman. Bagikan bola ke dalam keranjang agar setiap teman mendapat jumlah yang sama rata (2 bola)!</p>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1: FAIR BALL SHARING -->
+                    <div id="m4-step-1" class="interaction-block">
+                        <div class="balls-pool-container" id="balls-source-pool">
+                            <div class="ball-item" draggable="true" id="ball-1">⚽</div>
+                            <div class="ball-item" draggable="true" id="ball-2">⚽</div>
+                            <div class="ball-item" draggable="true" id="ball-3">⚽</div>
+                            <div class="ball-item" draggable="true" id="ball-4">⚽</div>
+                            <div class="ball-item" draggable="true" id="ball-5">⚽</div>
+                            <div class="ball-item" draggable="true" id="ball-6">⚽</div>
+                        </div>
+
+                        <div class="baskets-grid">
+                            <div class="basket-card" data-basket="1">
+                                <div class="basket-head">👦 Andi</div>
+                                <div class="basket-drop-zone" id="basket-1"></div>
+                                <div class="basket-count" id="count-basket-1">0 Bola</div>
+                            </div>
+                            <div class="basket-card" data-basket="2">
+                                <div class="basket-head">👧 Maya</div>
+                                <div class="basket-drop-zone" id="basket-2"></div>
+                                <div class="basket-count" id="count-basket-2">0 Bola</div>
+                            </div>
+                            <div class="basket-card" data-basket="3">
+                                <div class="basket-head">👦 Bimo</div>
+                                <div class="basket-drop-zone" id="basket-3"></div>
+                                <div class="basket-count" id="count-basket-3">0 Bola</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: TURN TAKING VARIATION (5 BALLS FOR 3 KIDS) -->
+                    <div id="m4-step-2" class="interaction-block hidden">
+                        <div class="turn-taking-section">
+                            <h3>Bagaimana jika ada 5 bola untuk 3 teman (tidak habis dibagi rata)?</h3>
+                            <p class="subtitle-hint">Berbagi tidak selalu harus rata, kadang kita perlu bermain bergantian!</p>
+                            
+                            <div class="cards-grid action-cards-grid" style="margin-top: 14px;">
+                                <button class="choice-card turn-choice-btn" data-choice="turns">
+                                    <div class="card-icon">🔄</div>
+                                    <span class="card-label">Main Bergantian Giliran!</span>
+                                </button>
+                                <button class="choice-card turn-choice-btn" data-choice="fight">
+                                    <div class="card-icon">💥</div>
+                                    <span class="card-label">Berebut Bola</span>
+                                </button>
+                            </div>
+
+                            <!-- TURN BOARD DISPLAY -->
+                            <div id="turn-board-display" class="turn-board-box hidden">
+                                <h4>📋 PAPAN GILIRAN SAHABAT</h4>
+                                <div class="turns-flex">
+                                    <div class="turn-step">Giliran 1: Andi</div>
+                                    <div class="turn-arrow">➔</div>
+                                    <div class="turn-step">Giliran 2: Maya</div>
+                                    <div class="turn-arrow">➔</div>
+                                    <div class="turn-step">Giliran 3: Bimo</div>
+                                </div>
+                                <p>Semua teman senang karena mendapat kesempatan bermain!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUCCESS BLOCK -->
+                    <div id="m4-success-block" class="success-block hidden">
+                        <div class="success-content">
+                            <span class="sparkle-icon">🏆</span>
+                            <h3>Hebat, Adil & Koperatif!</h3>
+                            <p>Kamu berhasil membagi bola dengan adil dan menyusun Papan Giliran! Kamu mendapatkan <strong>Badge Kerja Sama</strong>!</p>
+                            <button id="btn-finish-m4" class="primary-btn btn-lg">Selesai & Ke Pesta Puncak! 🥳</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 7. SCREEN: EPILOG & BUKU KEBAIKANKU -->
+            <!-- ========================================== -->
+            <section id="screen-epilog" class="game-screen">
+                <div class="epilog-wrapper glass-panel">
+                    <div class="confetti-container" id="confetti-holder"></div>
+                    
+                    <h1 class="epilog-title">🎉 Selamat, Sahabat Cerdas & Peduli! 🎉</h1>
+                    <p class="epilog-subtitle">Kamu telah menyelesaikan semua misi di Taman Pelangi Sahabat!</p>
+
+                    <!-- BADGES GALLERY -->
+                    <div class="badges-showcase-section">
+                        <h2>5 Lencana Kekuatan Sahabat:</h2>
+                        <div class="badges-grid-5" id="epilog-badges-grid">
+                            <!-- 5 Badges populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- BUKU KEBAIKANKU -->
+                    <div class="kindness-book-section">
+                        <h2>📖 BUKU KEBAIKANKU</h2>
+                        <p class="kindness-subtitle">Rekap tindakan baik yang telah kamu lakukan:</p>
+                        <div class="kindness-list" id="kindness-records-list">
+                            <!-- Positive deeds listed by JS -->
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="epilog-actions">
+                        <button id="btn-print-cert" class="primary-btn btn-lg">📜 Cetak Sertifikat</button>
+                        <button id="btn-view-bag-epilog" class="secondary-btn btn-lg">🎒 Lihat Tas Sahabat</button>
+                        <button id="btn-replay-game" class="secondary-btn btn-lg">🔄 Main Lagi dari Awal</button>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-  </div>
 
-  <!-- Admin Edit Modal Overlay -->
-  <div class="modal-overlay" id="admin-edit-modal">
-    <div class="modal-card admin-modal-card">
-      <h3 class="modal-title" id="admin-modal-title">Edit Konten</h3>
-      <form id="form-admin-edit" class="admin-form" style="width: 100%;">
-        <input type="hidden" id="edit-item-type">
-        <input type="hidden" id="edit-item-id">
-        
-        <div id="edit-fields-container"></div>
-        
-        <div class="modal-btn-row">
-          <button type="button" class="btn-child btn-secondary btn-sm" id="btn-cancel-admin-edit">Batal</button>
-          <button type="submit" class="btn-child btn-primary btn-sm">Simpan</button>
+    <!-- ========================================== -->
+    <!-- MODAL 1: TAS SAHABAT (BADGES & PROGRESS) -->
+    <!-- ========================================== -->
+    <div id="modal-bag" class="modal-overlay hidden">
+        <div class="modal-card glass-modal">
+            <div class="modal-header">
+                <h2>🎒 Tas Sahabat</h2>
+                <button class="modal-close-btn" data-close="modal-bag">✖</button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-summary">
+                    <div id="bag-avatar-display" class="bag-avatar-icon"></div>
+                    <div>
+                        <h3 id="bag-player-name">Sahabat</h3>
+                        <p id="bag-star-count">Bintang Terkumpul: 0 / 4 ★</p>
+                    </div>
+                </div>
+                <hr class="modal-divider">
+                <h3>Koleksi 5 Lencana Kekuatan:</h3>
+                <div class="badges-grid" id="modal-badges-grid"></div>
+            </div>
         </div>
-      </form>
     </div>
-  </div>
 
-  <!-- JavaScript Scripts -->
-  <script src="js/storage.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/admin.js"></script>
-  <script src="js/app.js"></script>
+    <!-- ========================================== -->
+    <!-- MODAL 2: PANDUAN PENDAMPING (ORANG TUA & GURU) -->
+    <!-- ========================================== -->
+    <div id="modal-parent" class="modal-overlay hidden">
+        <div class="modal-card glass-modal">
+            <div class="modal-header">
+                <h2>👨‍👩‍👧 Panduan Guru & Orang Tua</h2>
+                <button class="modal-close-btn" data-close="modal-parent">✖</button>
+            </div>
+            <div class="modal-body text-left">
+                <h3>📘 Panduan Pendamping (Guru / Orang Tua)</h3>
+                <p><strong>Empathy Quest</strong> adalah media pembelajaran digital berbasis web untuk anak usia 5–6 tahun (PAUD / TK B) yang mengintegrasikan pencegahan perundungan, empati, literasi, numerasi, dan komunikasi positif.</p>
+
+                <div class="guide-item">
+                    <h4>💡 Petunjuk Pendampingan:</h4>
+                    <ul>
+                        <li>Dampingi anak pada Prolog & Misi 1 untuk mengenalkan kontrol tap/klik.</li>
+                        <li>Setelah setiap misi, tanyakan: <em>“Jika kamu menjadi Dina/Beni/Tono, bagaimana perasaanmu?”</em> untuk menghubungkan dengan dunia nyata.</li>
+                        <li>Manfaatkan <strong>“Papan Giliran Sahabat”</strong> sebagai panduan jadwal bergantian di kelas atau rumah.</li>
+                    </ul>
+                </div>
+
+                <div class="guide-item">
+                    <h4>❤️ Misi 1: Baca Perasaanku</h4>
+                    <p>Fokus: Mengidentifikasi emosi sedih, mempraktikkan "Cermin Perasaan", dan memilih tindakan empati.</p>
+                </div>
+                <div class="guide-item">
+                    <h4>🔢 Misi 2: Hitung Teman Baik</h4>
+                    <p>Fokus: Berhitung 1–6, soal cerita inklusi, dan menggunakan Roda Ajak Teman untuk aktivitas bersama.</p>
+                </div>
+                <div class="guide-item">
+                    <h4>💬 Misi 3: Kata-Kata Sahabat</h4>
+                    <p>Fokus: Menyusun kalimat positif, aksi "Suara Beraninya Aku" membela teman yang diejek, dan menghargai perbedaan.</p>
+                </div>
+                <div class="guide-item">
+                    <h4>🤝 Misi 4: Bagi dan Bergantian</h4>
+                    <p>Fokus: Pembagian bola sama rata, pemecahan masalah jumlah ganjil, dan menggunakan Papan Giliran Sahabat.</p>
+                </div>
+
+                <hr class="modal-divider">
+
+                <h3>👶 Panduan untuk Anak</h3>
+                <ul>
+                    <li>Dengarkan petunjuk dari <strong>Kancil Pandu</strong>.</li>
+                    <li>Sentuh atau klik gambar yang kamu pilih. Tidak ada jawaban salah, hanya mencoba lagi bersama Kancil Pandu!</li>
+                    <li>Kumpulkan 4 Bintang dan 5 Lencana Sahabat!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PRINTABLE CERTIFICATE TEMPLATE -->
+    <!-- ========================================== -->
+    <div id="certificate-print-area" class="print-only">
+        <div class="cert-border">
+            <div class="cert-header">
+                <h1>SERTIFIKAT SAHABAT CERDAS & PEDULI</h1>
+                <p class="cert-subtitle">Taman Pelangi Sahabat</p>
+            </div>
+            <div class="cert-body">
+                <p class="cert-given">Diberikan dengan rasa bangga kepada:</p>
+                <h2 id="cert-player-name" class="cert-name">[ Nama Sahabat ]</h2>
+                <p class="cert-message">Telah berhasil menyelesaikan seluruh Misi Kebaikan di Taman Pelangi Sahabat dan terbukti memiliki 5 Kekuatan Sahabat: Empati, Literasi, Numerasi, Kerja Sama, dan Berani Bicara Baik.</p>
+                <div class="cert-badges-row">
+                    <span>❤️ Empati</span>
+                    <span>🔢 Numerasi</span>
+                    <span>📖 Literasi</span>
+                    <span>🤝 Kerja Sama</span>
+                    <span>🗣️ Berani Bicara Baik</span>
+                </div>
+            </div>
+            <div class="cert-footer">
+                <div class="cert-sign">
+                    <p>Pendamping / Guru</p>
+                    <div class="sign-line"></div>
+                </div>
+                <div class="cert-stamp">
+                    <span>🌟 TAMAN PELANGI 🌟</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
