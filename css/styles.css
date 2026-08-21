@@ -619,6 +619,70 @@ body {
     background: var(--primary-green);
 }
 
+/* Locked Gate State */
+.mission-gate-card.locked {
+    opacity: 0.75;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    filter: grayscale(0.35);
+    cursor: not-allowed;
+}
+
+.mission-gate-card.locked:hover {
+    transform: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.mission-gate-card.locked .gate-status-badge {
+    background: #64748B;
+}
+
+.mission-gate-card.locked .gate-play-btn {
+    background: #94A3B8;
+    color: #F8FAFC;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.shake-lock {
+    animation: lockShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes lockShake {
+    10%, 90% { transform: translate3d(-3px, 0, 0); }
+    20%, 80% { transform: translate3d(5px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-7px, 0, 0); }
+    40%, 60% { transform: translate3d(7px, 0, 0); }
+}
+
+/* Game Toast Popup */
+.game-toast-popup {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1E293B;
+    color: #FFFFFF;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    border: 3px solid #FFD166;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+    max-width: 90vw;
+}
+
+.game-toast-popup.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
 .gate-icon-frame {
     width: 80px;
     height: 80px;
@@ -845,15 +909,168 @@ body {
    MISSION 2 SPECIFICS (NUMBERS & SPINNING WHEEL)
    ========================================================================== */
 .playground-count-scene {
-    background: linear-gradient(180deg, #BAE6FD 0%, #BBF7D0 100%);
-    gap: 30px;
+    background: linear-gradient(180deg, #E0F2FE 0%, #DCFCE7 65%, #BBF7D0 100%);
+    border: 4px solid #93C5FD;
+    border-radius: var(--radius-md);
+    padding: 24px 16px 20px 16px;
+    min-height: 240px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    position: relative;
+    overflow: hidden;
 }
 
+.playground-count-scene::before {
+    content: '🌸 🌿 🌼 🌿 🌸';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Play Area Ring / Circle */
 .playing-group {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    max-width: 400px;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    padding: 14px 18px 10px 18px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 3px dashed #86EFAC;
+    border-radius: 40px;
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 2px 8px rgba(6, 214, 160, 0.15), 0 8px 16px rgba(0,0,0,0.05);
+}
+
+.playing-group::after {
+    content: '⚽';
+    font-size: 1.5rem;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: ballBounce 1.2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));
+}
+
+@keyframes ballBounce {
+    0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    100% { transform: translateX(-50%) translateY(-14px) rotate(180deg); }
+}
+
+/* Individual Child Wrapper in Playground */
+.playing-child-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: childPlayBounce 2s ease-in-out infinite alternate;
+}
+
+.playing-child-wrapper:nth-child(1) { animation-delay: 0s; transform: rotate(-4deg); }
+.playing-child-wrapper:nth-child(2) { animation-delay: 0.4s; transform: rotate(3deg) translateY(-4px); }
+.playing-child-wrapper:nth-child(3) { animation-delay: 0.8s; transform: rotate(-2deg); }
+.playing-child-wrapper:nth-child(4) { animation-delay: 1.2s; transform: rotate(5deg) translateY(-6px); }
+.playing-child-wrapper:nth-child(5) { animation-delay: 1.6s; transform: rotate(-3deg); }
+.playing-child-wrapper:nth-child(6) { animation-delay: 0.2s; transform: rotate(4deg); }
+
+@keyframes childPlayBounce {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.04); }
+    100% { transform: translateY(-2px) scale(1); }
+}
+
+.tono-joined-pop {
+    animation: tonoPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, childPlayBounce 2s ease-in-out infinite alternate 0.6s !important;
+}
+
+@keyframes tonoPopIn {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    80% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Number Badge on top of each child head */
+.count-badge {
+    background: var(--primary-blue);
+    color: #FFFFFF;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 800;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.18);
+    margin-bottom: 4px;
+    z-index: 5;
+}
+
+.playing-child-wrapper:nth-child(1) .count-badge { background: #FF5964; }
+.playing-child-wrapper:nth-child(2) .count-badge { background: #8338EC; }
+.playing-child-wrapper:nth-child(3) .count-badge { background: #FF9F1C; }
+.playing-child-wrapper:nth-child(4) .count-badge { background: #06D6A0; }
+.playing-child-wrapper:nth-child(5) .count-badge { background: #118AB2; }
+.playing-child-wrapper:nth-child(6) .count-badge { background: #EC4899; }
+
+.playing-child-wrapper .child-svg-img {
+    width: 75px;
+    height: 75px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* Lonely Kid Area */
+.lonely-kid-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px dashed #94A3B8;
+    border-radius: 20px;
+    animation: lonelyKidWait 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes lonelyKidWait {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-4px); }
+}
+
+.lonely-thought-bubble {
+    position: absolute;
+    top: -26px;
+    background: #FFFFFF;
+    border: 2px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #475569;
+    white-space: nowrap;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.lonely-thought-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: #FFFFFF transparent transparent transparent;
 }
 
 .story-question-box {

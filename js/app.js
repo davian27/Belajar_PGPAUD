@@ -44,11 +44,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let bgMusic = null;
     let bgMusicStarted = false;
 
+    // Dynamic Config Reader
+    function getConfig() {
+        try {
+            const saved = localStorage.getItem('empathy_quest_config');
+            if (saved) return JSON.parse(saved);
+        } catch (e) {
+            console.error('Config load error:', e);
+        }
+        return {};
+    }
+
+    let currentMusicSrc = '';
+
     function initBgMusic() {
-        if (!bgMusic) {
-            bgMusic = new Audio('assets/backsound.mp3');
+        const cfg = getConfig();
+        const musicSrc = cfg.backsoundUrl || 'assets/backsound.mp3';
+        if (!bgMusic || currentMusicSrc !== musicSrc) {
+            if (bgMusic) {
+                bgMusic.pause();
+                bgMusic = null;
+            }
+            bgMusic = new Audio(musicSrc);
             bgMusic.loop = true;
-            bgMusic.volume = 0.25; // Soft background music volume
+            bgMusic.volume = 0.25;
+            currentMusicSrc = musicSrc;
         }
     }
 
@@ -262,6 +282,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 5. UI CONTROLLER & SCREEN NAVIGATION
     // ==========================================
+    function showToast(msg) {
+        let toast = document.getElementById('game-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'game-toast';
+            toast.className = 'game-toast-popup';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
     function updateUIState() {
         const navAvatarEl = document.getElementById('nav-avatar-icon');
         const navNameEl = document.getElementById('nav-player-name');
@@ -283,12 +319,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const gateCard = document.getElementById(`gate-mission-${m}`);
             const gateBadge = document.getElementById(`gate-star-${m}`);
             if (gateCard && gateBadge) {
-                if (gameState.completedMissions.includes(m)) {
+                const btn = gateCard.querySelector('.gate-play-btn');
+                const isCompleted = gameState.completedMissions.includes(m);
+                const isUnlocked = m === 1 || gameState.completedMissions.includes(m - 1);
+
+                if (isCompleted) {
                     gateCard.classList.add('completed');
+                    gateCard.classList.remove('locked');
                     gateBadge.textContent = '★ Selesai!';
+                    if (btn) btn.textContent = 'Main Lagi 🔄';
+                } else if (isUnlocked) {
+                    gateCard.classList.remove('completed');
+                    gateCard.classList.remove('locked');
+                    gateBadge.textContent = `★ Misi ${m}`;
+                    if (btn) btn.textContent = 'Masuk Misi 🚀';
                 } else {
                     gateCard.classList.remove('completed');
-                    gateBadge.textContent = `★ Misi ${m}`;
+                    gateCard.classList.add('locked');
+                    gateBadge.textContent = '🔒 Terkunci';
+                    if (btn) btn.textContent = '🔒 Terkunci';
                 }
             }
         }
@@ -318,11 +367,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const startBtn = document.getElementById('btn-start-game');
         const hasSavedData = gameState.completedMissions.length > 0 || (gameState.playerName && gameState.playerName !== 'Sahabat');
 
+        const cfg = getConfig();
         if (prologSpeech) {
             if (hasSavedData) {
                 prologSpeech.innerHTML = `Selamat datang kembali, Sahabat <strong>${gameState.playerName}</strong>! 🎉 Bintangmu saat ini: <strong>${gameState.stars}/4 ★</strong>. Ayo pilih sahabatmu dan lanjutkan petualangan kebaikan di Taman Pelangi!`;
             } else {
-                prologSpeech.innerHTML = `Halo, Sahabat! Selamat datang di <strong>Taman Pelangi Sahabat</strong>! Di sini kita akan mengumpulkan 5 Lencana Kekuatan: Empati, Literasi, Numerasi, Kerja Sama, dan Berani Bicara Baik!`;
+                prologSpeech.innerHTML = cfg.prologSpeech || `Halo, Sahabat! Selamat datang di <strong>Taman Pelangi Sahabat</strong>! Di sini kita akan mengumpulkan 5 Lencana Kekuatan: Empati, Literasi, Numerasi, Kerja Sama, dan Berani Bicara Baik!`;
             }
         }
 
@@ -386,8 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
         step2Block.classList.add('hidden');
         successBlock.classList.add('hidden');
 
+        const cfg = getConfig();
         if (speechEl) {
-            speechEl.innerHTML = 'Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong>';
+            speechEl.innerHTML = cfg.m1Speech || 'Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong>';
         }
 
         document.querySelectorAll('.emotion-card').forEach(btn => {
@@ -437,16 +488,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupMission2() {
         const kidsGroup = document.getElementById('m2-kids-group');
         const lonelyKid = document.getElementById('lonely-kid-avatar');
+        const lonelyKidContainer = document.querySelector('.lonely-kid-box');
         
         if (kidsGroup) {
             kidsGroup.innerHTML = `
-                ${generateGenericChildSVG('#FF9F1C', '#F5D0A9', '#1E293B')}
-                ${generateGenericChildSVG('#8338EC', '#DDB892', '#8D6E63')}
-                ${generateGenericChildSVG('#FF5964', '#FFE0B2', '#212121')}
-                ${generateGenericChildSVG('#06D6A0', '#F5D0A9', '#1A202C')}
-                ${generateGenericChildSVG('#118AB2', '#DDB892', '#5D4037')}
+                <div class="playing-child-wrapper">
+                    <span class="count-badge">1</span>
+                    ${generateGenericChildSVG('#FF9F1C', '#F5D0A9', '#1E293B')}
+                </div>
+                <div class="playing-child-wrapper">
+                    <span class="count-badge">2</span>
+                    ${generateGenericChildSVG('#8338EC', '#DDB892', '#8D6E63')}
+                </div>
+                <div class="playing-child-wrapper">
+                    <span class="count-badge">3</span>
+                    ${generateGenericChildSVG('#FF5964', '#FFE0B2', '#212121')}
+                </div>
+                <div class="playing-child-wrapper">
+                    <span class="count-badge">4</span>
+                    ${generateGenericChildSVG('#06D6A0', '#F5D0A9', '#1A202C')}
+                </div>
+                <div class="playing-child-wrapper">
+                    <span class="count-badge">5</span>
+                    ${generateGenericChildSVG('#118AB2', '#DDB892', '#5D4037')}
+                </div>
             `;
         }
+        if (lonelyKidContainer) lonelyKidContainer.style.display = 'flex';
         if (lonelyKid) lonelyKid.innerHTML = generateGenericChildSVG('#94A3B8', '#F5D0A9', '#78350F');
 
         const step1 = document.getElementById('m2-step-1');
@@ -458,11 +526,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const spinBtn = document.getElementById('btn-spin-wheel');
         const answerInclusionBtn = document.getElementById('btn-answer-inclusion');
 
+        const cfg = getConfig();
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (wheelContainer) wheelContainer.classList.add('hidden');
-        if (speech) speech.textContent = 'Ada berapa teman yang sedang asyik bermain bersama?';
+        if (speech) speech.textContent = cfg.m2Speech || 'Ada berapa teman yang sedang asyik bermain bersama?';
 
         document.querySelectorAll('.number-btn').forEach(btn => {
             btn.onclick = () => {
@@ -503,9 +572,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     completeMission(2, 'numerasi', 'Berhitung 5 teman dan mengajak Tono bergabung bermain');
                     step2.classList.add('hidden');
                     success.classList.remove('hidden');
-                    if (kidsGroup && lonelyKid) {
-                        kidsGroup.innerHTML += generateGenericChildSVG('#06D6A0', '#F5D0A9', '#78350F');
-                        lonelyKid.style.display = 'none';
+                    if (kidsGroup) {
+                        kidsGroup.innerHTML += `
+                            <div class="playing-child-wrapper tono-joined-pop">
+                                <span class="count-badge">6</span>
+                                ${generateGenericChildSVG('#06D6A0', '#F5D0A9', '#78350F')}
+                            </div>
+                        `;
+                    }
+                    if (lonelyKidContainer) {
+                        lonelyKidContainer.style.display = 'none';
                     }
                     isSpinning = false;
                 }, 3200);
@@ -537,6 +613,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const resetBtn = document.getElementById('btn-reset-sentence');
         const slots = document.querySelectorAll('.word-slot');
         const wordCards = document.querySelectorAll('.word-card');
+
+        const cfg = getConfig();
+        const speech = document.getElementById('m3-speech');
+        if (speech) speech.textContent = cfg.m3Speech || 'Beni diejek karena gambarnya berbeda. Yuk, susun kata-kata baik untuk membantu dan membela Beni!';
+
+        const heroSpeakEl = document.querySelector('.hero-bubble p');
+        if (heroSpeakEl) {
+            const line = cfg.m3HeroSpeak || 'Jangan ejek teman! Gambarmu sangat unik dan keren, Beni!';
+            heroSpeakEl.innerHTML = `🗣️ <strong>Suara Beraninya Aku:</strong><br>“${line}”`;
+        }
 
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
@@ -618,10 +704,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const turnBoard = document.getElementById('turn-board-display');
         const speech = document.getElementById('m4-speech');
 
+        const cfg = getConfig();
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (turnBoard) turnBoard.classList.add('hidden');
+        if (speech) speech.textContent = cfg.m4Speech || 'Tersedia 6 bola untuk 3 teman. Bagikan bola ke dalam keranjang agar setiap teman mendapat jumlah yang sama rata (2 bola)!';
 
         let basketCounts = { 1: 0, 2: 0, 3: 0 };
 
@@ -844,6 +932,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.mission-gate-card').forEach(gate => {
             gate.onclick = () => {
                 const missionNum = parseInt(gate.getAttribute('data-mission'));
+                const isUnlocked = missionNum === 1 || gameState.completedMissions.includes(missionNum - 1);
+
+                if (!isUnlocked) {
+                    playSound('click');
+                    gate.classList.add('shake-lock');
+                    setTimeout(() => gate.classList.remove('shake-lock'), 450);
+                    showToast(`🔒 Selesaikan Misi ${missionNum - 1} terlebih dahulu untuk membuka Misi ${missionNum}!`);
+                    return;
+                }
+
                 playSound('click');
                 if (missionNum === 1) {
                     setupMission1();
