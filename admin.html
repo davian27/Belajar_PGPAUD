@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — EMPATHY QUEST</title>
+    <meta name="description" content="Panel Kelola Konten & Musik Latar EMPATHY QUEST">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            background-color: #F1F5F9;
+            align-items: flex-start;
+            padding: 20px 10px;
+        }
+
+        .admin-container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            border: 1px solid #E2E8F0;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .admin-header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary-yellow);
+        }
+
+        .admin-header p {
+            font-size: 0.95rem;
+            color: #94A3B8;
+        }
+
+        .admin-body {
+            padding: 24px;
+        }
+
+        .admin-section {
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .admin-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.35rem;
+            color: var(--primary-blue);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            padding: 10px 14px;
+            border: 2px solid #CBD5E1;
+            border-radius: var(--radius-sm);
+            outline: none;
+            background: #FFFFFF;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(17, 138, 178, 0.15);
+        }
+
+        .audio-preview-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #FFF;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            border: 2px solid #E2E8F0;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .pin-card {
+            background: #FFF;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .pin-card h2 {
+            font-family: var(--font-heading);
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .pin-input {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            letter-spacing: 8px;
+            text-align: center;
+            width: 180px;
+            padding: 10px;
+            margin: 16px 0;
+            border: 3px solid var(--primary-blue);
+            border-radius: var(--radius-md);
+        }
+
+        .admin-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary-green);
+            color: #FFF;
+            font-weight: 800;
+            padding: 14px 24px;
+            border-radius: var(--radius-full);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECURITY PIN MODAL -->
+    <div id="pin-modal" class="pin-overlay">
+        <div class="pin-card">
+            <h2>⚙️ Keamanan Admin</h2>
+            <p>Masukkan PIN Kunci untuk mengakses Panel Konten Pendamping/Guru.</p>
+            <input type="password" id="pin-input-field" class="pin-input" maxlength="6" placeholder="••••">
+            <p id="pin-error-msg" style="color: var(--primary-red); font-weight:700; display:none;">PIN Salah! Coba lagi.</p>
+            <div style="margin-top: 14px;">
+                <button id="btn-submit-pin" class="primary-btn btn-md">Masuk Admin</button>
+            </div>
+            <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 14px;">(PIN Bawaan: <strong>1234</strong>)</p>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD -->
+    <div class="admin-container">
+        <header class="admin-header">
+            <div>
+                <h1>⚙️ Panel Kelola Konten & Musik</h1>
+                <p>Pengaturan Konten Misi & Backsound — EMPATHY QUEST</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="index.html" class="secondary-btn btn-sm" style="text-decoration:none;">🎮 Ke Game</a>
+                <button id="btn-save-admin" class="primary-btn btn-sm">💾 Simpan Perubahan</button>
+            </div>
+        </header>
+
+        <main class="admin-body">
+            
+            <!-- SECTION 1: BACKSOUND MANAGEMENT -->
+            <section class="admin-section">
+                <h2>🎵 Kelola Musik Latar (Backsound)</h2>
+                
+                <div class="form-group">
+                    <label for="audio-source-type">Pilih Sumber Lagu Backsound:</label>
+                    <select id="audio-source-type">
+                        <option value="default">Lagu Bawaan (assets/backsound.mp3)</option>
+                        <option value="upload">Unggah File Audio Baru (MP3 / WAV)</option>
+                        <option value="url">Tautan URL Audio Eksternal</option>
+                    </select>
+                </div>
+
+                <!-- FILE UPLOAD INPUT -->
+                <div class="form-group hidden" id="upload-group">
+                    <label for="audio-file-input">Unggah Berkas Lagu (Maksimal 10MB):</label>
+                    <input type="file" id="audio-file-input" accept="audio/*">
+                    <p style="font-size:0.85rem; color:#64748B; margin-top:4px;">File lagu akan disimpan otomatis di memori browser.</p>
+                </div>
+
+                <!-- URL INPUT -->
+                <div class="form-group hidden" id="url-group">
+                    <label for="audio-url-input">Masukkan URL Tautan Audio (.mp3):</label>
+                    <input type="text" id="audio-url-input" placeholder="https://example.com/musik.mp3">
+                </div>
+
+                <!-- AUDIO PREVIEW PLAYER -->
+                <div class="audio-preview-box">
+                    <span style="font-weight:700;">Pratinjau Lagu Saat Ini:</span>
+                    <audio id="admin-audio-preview" controls style="flex:1; max-width: 400px;"></audio>
+                    <button id="btn-reset-audio" class="secondary-btn btn-sm">🔄 Reset Lagu Bawaan</button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: MASCOT & PROLOG CONTENT -->
+            <section class="admin-section">
+                <h2>💬 Pengaturan Maskot & Prolog</h2>
+                
+                <div class="form-group">
+                    <label for="cfg-mascot-name">Nama Maskot Pemandu:</label>
+                    <input type="text" id="cfg-mascot-name" value="Kancil Pandu">
+                </div>
+
+                <div class="form-group">
+                    <label for="cfg-prolog-speech">Teks Salam Sambutan Prolog:</label>
+                    <textarea id="cfg-prolog-speech"></textarea>
+                </div>
+            </section>
+
+            <!-- SECTION 3: MISSION CONTENT EDITING -->
+            <section class="admin-section">
+                <h2>🎯 Pengaturan Konten Misi 1 - 4</h2>
+
+                <!-- MISSION 1 -->
+                <div class="form-group">
+                    <label for="cfg-m1-speech">Misi 1 — Teks Cerita Dina:</label>
+                    <textarea id="cfg-m1-speech"></textarea>
+                </div>
+
+                <!-- MISSION 2 -->
+                <div class="form-group">
+                    <label for="cfg-m2-speech">Misi 2 — Teks Berhitung Teman:</label>
+                    <textarea id="cfg-m2-speech"></textarea>
+                </div>
+
+                <!-- MISSION 3 -->
+                <div class="form-group">
+                    <label for="cfg-m3-speech">Misi 3 — Teks Cerita Beni & Gambar:</label>
+                    <textarea id="cfg-m3-speech"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cfg-m3-hero">Misi 3 — Kalimat Suara Beraninya Aku (Avatar Membela):</label>
+                    <input type="text" id="cfg-m3-hero">
+                </div>
+
+                <!-- MISSION 4 -->
+                <div class="form-group">
+                    <label for="cfg-m4-speech">Misi 4 — Teks Cerita Berbagi Bola & Giliran:</label>
+                    <textarea id="cfg-m4-speech"></textarea>
+                </div>
+            </section>
+
+            <!-- SECTION 4: SECURITY & SYSTEM RESET -->
+            <section class="admin-section">
+                <h2>🔐 Keamanan & Reset Data</h2>
+                
+                <div style="display:flex; gap:16px; flex-wrap:wrap;">
+                    <div class="form-group" style="flex:1;">
+                        <label for="cfg-pin">Ubah PIN Keamanan Admin:</label>
+                        <input type="text" id="cfg-pin" maxlength="6" value="1234">
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:12px; margin-top:10px; flex-wrap:wrap;">
+                    <button id="btn-reset-all-config" class="secondary-btn btn-sm" style="color:var(--primary-red); border-color:var(--primary-red);">🔄 Reset Konten ke Bawaan</button>
+                    <button id="btn-clear-player-progress" class="secondary-btn btn-sm">🗑️ Hapus Progress Bermain Siswa</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toast-msg" class="admin-toast">Perubahan berhasil disimpan!</div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

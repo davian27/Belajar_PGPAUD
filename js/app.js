@@ -41,12 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. AUDIO SYNTHESIZER & BACKGROUND MUSIC ENGINE
     // ==========================================
     let audioCtx = null;
-    let bgMusic = null;
-    let bgMusicStarted = false;
+    // Dynamic Config Reader
+    function getConfig() {
+        try {
+            const saved = localStorage.getItem('empathy_quest_config');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (e) {
+            console.error('Config load error:', e);
+        }
+        return {};
+    }
 
     function initBgMusic() {
-        if (!bgMusic) {
-            bgMusic = new Audio('assets/backsound.mp3');
+        const cfg = getConfig();
+        const musicSrc = cfg.backsoundUrl || 'assets/backsound.mp3';
+        if (!bgMusic || bgMusic.src !== musicSrc) {
+            if (bgMusic) bgMusic.pause();
+            bgMusic = new Audio(musicSrc);
             bgMusic.loop = true;
             bgMusic.volume = 0.25; // Soft background music volume
         }
@@ -386,8 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
         step2Block.classList.add('hidden');
         successBlock.classList.add('hidden');
 
+        const cfg = getConfig();
         if (speechEl) {
-            speechEl.innerHTML = 'Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong>';
+            speechEl.innerHTML = cfg.m1Speech || 'Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong>';
         }
 
         document.querySelectorAll('.emotion-card').forEach(btn => {
@@ -458,11 +472,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const spinBtn = document.getElementById('btn-spin-wheel');
         const answerInclusionBtn = document.getElementById('btn-answer-inclusion');
 
+        const cfg = getConfig();
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (wheelContainer) wheelContainer.classList.add('hidden');
-        if (speech) speech.textContent = 'Ada berapa teman yang sedang asyik bermain bersama?';
+        if (speech) speech.textContent = cfg.m2Speech || 'Ada berapa teman yang sedang asyik bermain bersama?';
 
         document.querySelectorAll('.number-btn').forEach(btn => {
             btn.onclick = () => {
@@ -530,6 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroWrap) heroWrap.innerHTML = generateAvatarSVG(gameState.avatarId);
         if (teaseBubble) teaseBubble.classList.remove('faded');
 
+        const cfg = getConfig();
         const step1 = document.getElementById('m3-step-1');
         const step2 = document.getElementById('m3-step-2');
         const success = document.getElementById('m3-success-block');
@@ -537,6 +553,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const resetBtn = document.getElementById('btn-reset-sentence');
         const slots = document.querySelectorAll('.word-slot');
         const wordCards = document.querySelectorAll('.word-card');
+        const speech = document.getElementById('m3-speech');
+
+        if (speech) speech.textContent = cfg.m3Speech || 'Beni diejek karena gambarnya berbeda. Yuk, susun kata-kata baik untuk membantu dan membela Beni!';
+        const heroSpeakEl = document.querySelector('.hero-bubble p');
+        if (heroSpeakEl) {
+            const line = cfg.m3HeroSpeak || 'Jangan ejek teman! Gambarmu sangat unik dan keren, Beni!';
+            heroSpeakEl.innerHTML = `🗣️ <strong>Suara Beraninya Aku:</strong><br>“${line}”`;
+        }
 
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
@@ -618,10 +642,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const turnBoard = document.getElementById('turn-board-display');
         const speech = document.getElementById('m4-speech');
 
+        const cfg = getConfig();
         step1.classList.remove('hidden');
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (turnBoard) turnBoard.classList.add('hidden');
+        if (speech) speech.textContent = cfg.m4Speech || 'Tersedia 6 bola untuk 3 teman. Bagikan bola ke dalam keranjang agar setiap teman mendapat jumlah yang sama rata (2 bola)!';
 
         let basketCounts = { 1: 0, 2: 0, 3: 0 };
 
