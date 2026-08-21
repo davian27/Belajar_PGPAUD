@@ -1704,16 +1704,235 @@ body {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   RESPONSIVE DESIGN (TABLETS & MOBILE SMARTPHONES)
    ========================================================================== */
 @media (max-width: 768px) {
-    .game-header { padding: 8px 12px; }
+    body {
+        padding: 6px 0;
+    }
+
+    .game-container {
+        padding: 0 8px;
+    }
+
+    .game-header {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
     .btn-text { display: none; }
     .star-label { display: none; }
-    .map-gates-grid { grid-template-columns: 1fr; }
-    .cards-grid { grid-template-columns: 1fr; }
-    .numbers-grid { grid-template-columns: repeat(3, 1fr); }
-    .baskets-grid { grid-template-columns: 1fr; }
-    .badges-grid-5 { grid-template-columns: repeat(3, 1fr); }
-    .game-title { font-size: 2rem; }
+
+    .map-gates-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .numbers-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .baskets-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .badges-grid-5 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .game-title {
+        font-size: 2.1rem;
+    }
+
+    .game-subtitle {
+        font-size: 1.05rem;
+    }
+
+    .rainbow-svg {
+        width: 250px;
+        height: 110px;
+    }
+
+    .epilog-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .epilog-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 540px) {
+    .game-header {
+        padding: 6px 8px;
+        border-radius: 16px;
+    }
+
+    .header-left, .header-right {
+        gap: 6px;
+    }
+
+    .player-pill {
+        padding: 3px 8px 3px 4px;
+    }
+
+    .player-name-text {
+        max-width: 70px;
+        font-size: 0.85rem;
+    }
+
+    .star-counter-bar {
+        padding: 4px 8px;
+    }
+
+    .star-icon {
+        font-size: 1.15rem;
+    }
+
+    .nav-btn {
+        padding: 8px;
+        font-size: 1.1rem;
+    }
+
+    .prolog-card {
+        padding: 16px 12px;
+    }
+
+    .mascot-intro-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .mascot-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .speech-bubble::before, .speech-bubble::after {
+        display: none;
+    }
+
+    .avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .avatar-preview-svg {
+        width: 75px;
+        height: 75px;
+    }
+
+    /* Mission 2 Playground Scene on Mobile */
+    .playground-count-scene {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 20px 10px;
+        min-height: auto;
+    }
+
+    .playing-group {
+        gap: 4px;
+        padding: 10px 8px 8px 8px;
+        width: 100%;
+        max-width: 100%;
+        justify-content: space-evenly;
+    }
+
+    .playing-child-wrapper .child-svg-img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .count-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 0.85rem;
+    }
+
+    .lonely-kid-box {
+        padding: 8px 12px;
+        margin-top: 6px;
+    }
+
+    .lonely-thought-bubble {
+        top: -22px;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+    }
+
+    .sentence-drop-zone {
+        gap: 6px;
+    }
+
+    .word-slot {
+        font-size: 1rem;
+        padding: 8px 12px;
+        min-width: 70px;
+    }
+
+    .word-card {
+        font-size: 1rem;
+        padding: 10px 14px;
+    }
+
+    .modal-overlay {
+        padding: 10px;
+    }
+
+    .glass-modal {
+        max-height: 90vh;
+    }
+
+    .modal-body {
+        padding: 14px;
+    }
+
+    .game-toast-popup {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+        width: 92%;
+    }
+}
+
+@media (max-width: 380px) {
+    .game-title {
+        font-size: 1.75rem;
+    }
+
+    .rainbow-svg {
+        width: 200px;
+        height: 90px;
+    }
+
+    .playing-child-wrapper .child-svg-img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .count-badge {
+        width: 22px;
+        height: 22px;
+        font-size: 0.8rem;
+    }
+
+    .numbers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .badges-grid-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
