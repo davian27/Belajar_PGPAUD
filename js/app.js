@@ -168,6 +168,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // 2.5 CLOUD TTS (GOOGLE CLOUD FEMALE AI VOICE) WITH LOCAL FALLBACK
+    // ==========================================
+    let currentAudioTTS = null;
+    let currentUtterance = null;
+    let cachedIndonesianVoice = null;
+
+    function getIndonesianVoice() {
+        if (!('speechSynthesis' in window)) return null;
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) return null;
+
+        const googleFemale = voices.find(v => 
+            (v.name.includes('Google') || v.name.includes('google')) && 
+            (v.lang.includes('id') || v.lang.includes('ID') || v.name.toLowerCase().includes('indonesi'))
+        );
+        if (googleFemale) return googleFemale;
+
+        const naturalFemale = voices.find(v => 
+            (v.lang.includes('id') || v.name.toLowerCase().includes('indonesi')) &&
+            (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('gadis') || v.name.toLowerCase().includes('damayanti') || v.name.toLowerCase().includes('perempuan'))
+        );
+        if (naturalFemale) return naturalFemale;
+
+        const anyIndonesian = voices.find(v => 
+            v.lang === 'id-ID' || v.lang === 'id_ID' || v.lang.startsWith('id') || v.name.toLowerCase().includes('indonesia')
+        );
+        return anyIndonesian || null;
+    }
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            getIndonesianVoice();
+        };
+    }
+
+    function speakText(text, btnElement = null) {
+        if (!gameState.soundEnabled) return;
+
+        const cleanText = text.replace(/<[^>]*>/g, '').replace(/[\"\“\”]/g, '').trim();
+        if (!cleanText) return;
+
+        stopSpeech();
+
+        // 1. Try Google Cloud Neural High Quality Female Indonesian Voice Stream
+        const encodedText = encodeURIComponent(cleanText);
+        const cloudTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=id&client=tw-ob`;
+
+        const audio = new Audio(cloudTtsUrl);
+        audio.volume = 1.0;
+
+        if (btnElement) {
+            btnElement.classList.add('reading-pulse');
+            btnElement.innerHTML = '🔊 Membaca...';
+        }
+
+        let hasEnded = false;
+        const resetBtn = () => {
+            if (hasEnded) return;
+            hasEnded = true;
+            if (btnElement) {
+                btnElement.classList.remove('reading-pulse');
+                btnElement.innerHTML = btnElement.id === 'btn-read-prolog' ? '🔊 Dengarkan Suara' : '🔊 Baca Soal';
+            }
+        };
+
+        audio.onended = resetBtn;
+        audio.onerror = () => {
+            console.log('Cloud TTS stream deferred, using local TTS fallback');
+            speakWebSpeechAPI(cleanText, btnElement);
+        };
+
+        audio.play().then(() => {
+            currentAudioTTS = audio;
+        }).catch(err => {
+            console.log('Cloud TTS play deferred/blocked, fallback to Web Speech API:', err);
+            speakWebSpeechAPI(cleanText, btnElement);
+        });
+    }
+
+    function speakWebSpeechAPI(cleanText, btnElement) {
+        if (!('speechSynthesis' in window)) {
+            if (btnElement) {
+                btnElement.classList.remove('reading-pulse');
+                btnElement.innerHTML = btnElement.id === 'btn-read-prolog' ? '🔊 Dengarkan Suara' : '🔊 Baca Soal';
+            }
+            return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'id-ID';
+        utterance.rate = 0.88;
+        utterance.pitch = 1.08;
+
+        const voice = getIndonesianVoice();
+        if (voice) utterance.voice = voice;
+
+        if (btnElement) {
+            btnElement.classList.add('reading-pulse');
+            btnElement.innerHTML = '🔊 Membaca...';
+
+            utterance.onend = () => {
+                btnElement.classList.remove('reading-pulse');
+                btnElement.innerHTML = btnElement.id === 'btn-read-prolog' ? '🔊 Dengarkan Suara' : '🔊 Baca Soal';
+            };
+            utterance.onerror = () => {
+                btnElement.classList.remove('reading-pulse');
+                btnElement.innerHTML = btnElement.id === 'btn-read-prolog' ? '🔊 Dengarkan Suara' : '🔊 Baca Soal';
+            };
+        }
+
+        currentUtterance = utterance;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeech() {
+        if (currentAudioTTS) {
+            currentAudioTTS.pause();
+            currentAudioTTS = null;
+        }
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        document.querySelectorAll('.speech-read-btn').forEach(btn => {
+            btn.classList.remove('reading-pulse');
+            btn.innerHTML = btn.id === 'btn-read-prolog' ? '🔊 Dengarkan Suara' : '🔊 Baca Soal';
+        });
+    }
+
+    // ==========================================
     // 3. SVG GRAPHICS GENERATORS
     // ==========================================
     function generateAvatarSVG(avatarId) {
@@ -346,6 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showScreen(screenId) {
+        stopSpeech();
         document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById(`screen-${screenId}`);
         if (target) {
@@ -458,6 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cfg = getConfig();
         if (speechEl) {
             speechEl.innerHTML = cfg.m1Speech || 'Dina duduk sendirian di bangku taman sambil murung. Teman-teman bermain tanpa mengajaknya. Lengkapi kalimat: <strong>“Dina merasa ____.”</strong>';
+            setTimeout(() => speakText(speechEl.innerHTML, document.getElementById('btn-read-m1')), 300);
         }
 
         document.querySelectorAll('.emotion-card').forEach(btn => {
@@ -550,7 +681,10 @@ document.addEventListener('DOMContentLoaded', () => {
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (wheelContainer) wheelContainer.classList.add('hidden');
-        if (speech) speech.textContent = cfg.m2Speech || 'Ada berapa teman yang sedang asyik bermain bersama?';
+        if (speech) {
+            speech.textContent = cfg.m2Speech || 'Ada berapa teman yang sedang asyik bermain bersama?';
+            setTimeout(() => speakText(speech.textContent, document.getElementById('btn-read-m2')), 300);
+        }
 
         document.querySelectorAll('.number-btn').forEach(btn => {
             btn.onclick = () => {
@@ -635,7 +769,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cfg = getConfig();
         const speech = document.getElementById('m3-speech');
-        if (speech) speech.textContent = cfg.m3Speech || 'Beni diejek karena gambarnya berbeda. Yuk, susun kata-kata baik untuk membantu dan membela Beni!';
+        if (speech) {
+            speech.textContent = cfg.m3Speech || 'Beni diejek karena gambarnya berbeda. Yuk, susun kata-kata baik untuk membantu dan membela Beni!';
+            setTimeout(() => speakText(speech.textContent, document.getElementById('btn-read-m3')), 300);
+        }
 
         const heroSpeakEl = document.querySelector('.hero-bubble p');
         if (heroSpeakEl) {
@@ -728,7 +865,10 @@ document.addEventListener('DOMContentLoaded', () => {
         step2.classList.add('hidden');
         success.classList.add('hidden');
         if (turnBoard) turnBoard.classList.add('hidden');
-        if (speech) speech.textContent = cfg.m4Speech || 'Tersedia 6 bola untuk 3 teman. Bagikan bola ke dalam keranjang agar setiap teman mendapat jumlah yang sama rata (2 bola)!';
+        if (speech) {
+            speech.textContent = cfg.m4Speech || 'Tersedia 6 bola untuk 3 teman. Bagikan bola ke dalam keranjang agar setiap teman mendapat jumlah yang sama rata (2 bola)!';
+            setTimeout(() => speakText(speech.textContent, document.getElementById('btn-read-m4')), 300);
+        }
 
         let basketCounts = { 1: 0, 2: 0, 3: 0 };
 
@@ -923,9 +1063,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     playSound('click');
                 } else {
                     pauseBgMusic();
+                    stopSpeech();
                 }
             };
         }
+
+        // Bind TTS Speech Read Buttons for PAUD
+        const bindSpeechBtn = (btnId, speechTextElId) => {
+            const btn = document.getElementById(btnId);
+            const speechEl = document.getElementById(speechTextElId);
+            if (btn && speechEl) {
+                btn.onclick = () => {
+                    if (btn.classList.contains('reading-pulse')) {
+                        stopSpeech();
+                    } else {
+                        speakText(speechEl.innerHTML || speechEl.textContent, btn);
+                    }
+                };
+            }
+        };
+
+        bindSpeechBtn('btn-read-prolog', 'prolog-speech');
+        bindSpeechBtn('btn-read-m1', 'm1-speech');
+        bindSpeechBtn('btn-read-m2', 'm2-speech');
+        bindSpeechBtn('btn-read-m3', 'm3-speech');
+        bindSpeechBtn('btn-read-m4', 'm4-speech');
 
         // Start background music on first user interaction (touch/click)
         const startAudioOnUserInteraction = () => {

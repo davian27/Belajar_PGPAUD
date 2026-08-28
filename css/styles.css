@@ -426,6 +426,50 @@ body {
     z-index: 1;
 }
 
+/* Speech Read Button for PAUD TTS */
+.speech-read-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FEF3C7;
+    border: 2px solid #F59E0B;
+    color: #B45309;
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 3px 0 #D97706;
+    flex-shrink: 0;
+}
+
+.speech-read-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: #FDE68A;
+    box-shadow: 0 5px 0 #D97706;
+}
+
+.speech-read-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #D97706;
+}
+
+.speech-read-btn.reading-pulse {
+    background: #DCFCE7 !important;
+    border-color: #10B981 !important;
+    color: #047857 !important;
+    box-shadow: 0 3px 0 #059669 !important;
+    animation: ttsPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes ttsPulse {
+    from { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    to { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
 /* Avatar Grid */
 .avatar-selection-section h2 {
     font-family: var(--font-heading);
