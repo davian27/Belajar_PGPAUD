@@ -597,16 +597,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (emotion === 'sedih' || emotion === 'kesepian') {
                     playSound('correct');
                     if (dinaWrap) dinaWrap.innerHTML = generateDinaSVG('happy');
-                    if (speechEl) {
-                        speechEl.innerHTML = `Benar sekali! Dina merasa <strong>${emotion}</strong> karena tidak diajak bermain. Sekarang, bagaimana cara kita membantunya?`;
-                    }
+                    const feedbackMsg = `Benar sekali! Dina merasa <strong>${emotion}</strong> karena tidak diajak bermain. Sekarang, bagaimana cara kita membantunya?`;
+                    if (speechEl) speechEl.innerHTML = feedbackMsg;
+                    speakText(`Benar sekali! Dina merasa ${emotion} karena tidak diajak bermain. Sekarang, bagaimana cara kita membantunya?`, document.getElementById('btn-read-m1'));
                     step1Block.classList.add('hidden');
                     step2Block.classList.remove('hidden');
                 } else {
                     playSound('click');
-                    if (speechEl) {
-                        speechEl.innerHTML = 'Hmm... coba perhatikan lagi raut wajah Dina. Matanya redup dan bibirnya melengkung ke bawah. Menurutmu bagaimana perasaannya?';
-                    }
+                    const hintMsg = 'Hmm... coba perhatikan lagi raut wajah Dina. Matanya redup dan bibirnya melengkung ke bawah. Menurutmu bagaimana perasaannya?';
+                    if (speechEl) speechEl.innerHTML = hintMsg;
+                    speakText(hintMsg, document.getElementById('btn-read-m1'));
                 }
             };
         });
@@ -619,11 +619,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     completeMission(1, 'empati', 'Membantu dan mengajak Dina bermain saat ia kesepian');
                     step2Block.classList.add('hidden');
                     successBlock.classList.remove('hidden');
+                    speakText('Luar biasa! Dina tersenyum bahagia karena kamu mengajaknya bermain bersama! Kamu mendapatkan Badge Empati!', document.getElementById('btn-read-m1'));
                 } else {
                     playSound('click');
-                    if (speechEl) {
-                        speechEl.innerHTML = 'Menurutmu, bagaimana perasaan Dina kalau begitu? Yuk pilih cara paling ramah untuk mengajaknya ditemani!';
-                    }
+                    const retryMsg = 'Menurutmu, bagaimana perasaan Dina kalau begitu? Yuk pilih cara paling ramah untuk mengajaknya ditemani!';
+                    if (speechEl) speechEl.innerHTML = retryMsg;
+                    speakText(retryMsg, document.getElementById('btn-read-m1'));
                 }
             };
         });
@@ -692,11 +693,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (num === 5) {
                     playSound('correct');
                     if (speech) speech.innerHTML = 'Hebat! Ada <strong>5 teman</strong> yang sedang bermain!';
+                    speakText('Hebat! Ada 5 teman yang sedang bermain!', document.getElementById('btn-read-m2'));
                     step1.classList.add('hidden');
                     step2.classList.remove('hidden');
                 } else {
                     playSound('click');
-                    if (speech) speech.textContent = 'Ayo kita hitung satu per satu anak yang ada di kelompok bermain. Coba hitung lagi!';
+                    const retryMsg = 'Ayo kita hitung satu per satu anak yang ada di kelompok bermain. Coba hitung lagi!';
+                    if (speech) speech.textContent = retryMsg;
+                    speakText(retryMsg, document.getElementById('btn-read-m2'));
                 }
             };
         });
@@ -704,7 +708,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (answerInclusionBtn) {
             answerInclusionBtn.onclick = () => {
                 playSound('correct');
+                const successMsg = 'Benar! Kita cukup mengajak 1 teman, Tono, agar semua 6 anak bisa ikut bermain bersama!';
                 if (speech) speech.innerHTML = 'Benar! Kita cukup mengajak <strong>1 teman (Tono)</strong> agar semua 6 anak bisa ikut bermain bersama!';
+                speakText(successMsg, document.getElementById('btn-read-m2'));
                 if (wheelContainer) wheelContainer.classList.remove('hidden');
                 answerInclusionBtn.parentElement.classList.add('hidden');
             };
@@ -725,6 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     completeMission(2, 'numerasi', 'Berhitung 5 teman dan mengajak Tono bergabung bermain');
                     step2.classList.add('hidden');
                     success.classList.remove('hidden');
+                    speakText('Semua Bergandengan Tangan! Sekarang 6 teman bermain bersama dengan tawa riang! Kamu mendapatkan Badge Numerasi!', document.getElementById('btn-read-m2'));
                     if (kidsGroup) {
                         kidsGroup.innerHTML += `
                             <div class="playing-child-wrapper tono-joined-pop">
@@ -828,6 +835,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     step1.classList.add('hidden');
                     step2.classList.remove('hidden');
                     if (teaseBubble) teaseBubble.classList.add('faded');
+                    speakText('Jangan ejek teman! Gambarmu sangat unik dan keren, Beni!', document.getElementById('btn-read-m3'));
 
                     setTimeout(() => {
                         playSound('star');
@@ -837,11 +845,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         step2.classList.add('hidden');
                         success.classList.remove('hidden');
-                    }, 3500);
+                        speakText('Perbedaan itu indah dan berharga! Teman-teman memuji gambar Beni. Kamu meraih Badge Literasi dan Badge Berani Bicara Baik!', document.getElementById('btn-read-m3'));
+                    }, 4000);
                 } else {
                     playSound('click');
                     const speech = document.getElementById('m3-speech');
-                    if (speech) speech.textContent = 'Yuk coba lagi! Susun kata agar menjadi: "Jangan ejek teman"';
+                    const retryMsg = 'Yuk coba lagi! Susun kata agar menjadi: Jangan ejek teman';
+                    if (speech) speech.textContent = retryMsg;
+                    speakText(retryMsg, document.getElementById('btn-read-m3'));
                 }
             };
         }
@@ -894,7 +905,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (basketCounts[1] === 2 && basketCounts[2] === 2 && basketCounts[3] === 2) {
                         playSound('correct');
-                        if (speech) speech.textContent = 'Luar biasa! 6 bola terbagi adil: masing-masing dapat 2 bola!';
+                        const doneMsg = 'Hebat! 6 bola sudah terbagi rata, 2 bola untuk setiap teman! Sekarang mari kita atur papan giliran bermain!';
+                        if (speech) speech.textContent = 'Hebat! 6 bola sudah terbagi rata (2 bola untuk setiap teman)!';
+                        speakText(doneMsg, document.getElementById('btn-read-m4'));
                         setTimeout(() => {
                             step1.classList.add('hidden');
                             step2.classList.remove('hidden');
@@ -914,10 +927,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         completeMission(4, 'kerjasama', 'Membagi 6 bola dengan adil dan menyusun Papan Giliran');
                         step2.classList.add('hidden');
                         success.classList.remove('hidden');
+                        speakText('Hebat Sekali! Semua teman bermain dengan rukun dan adil secara bergantian! Kamu mendapatkan Badge Kerja Sama!', document.getElementById('btn-read-m4'));
                     }, 3000);
                 } else {
                     playSound('click');
-                    if (speech) speech.textContent = 'Berebut akan membuat teman sedih. Yuk, pilih cara bermain yang aman dan bergantian!';
+                    const retryMsg = 'Berebut akan membuat teman sedih. Yuk, pilih cara bermain yang aman dan bergantian!';
+                    if (speech) speech.textContent = retryMsg;
+                    speakText(retryMsg, document.getElementById('btn-read-m4'));
                 }
             };
         });
