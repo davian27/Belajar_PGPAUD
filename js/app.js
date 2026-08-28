@@ -211,9 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         stopSpeech();
 
-        // 1. Try Google Cloud Neural High Quality Female Indonesian Voice Stream
+        // 1. Try Vercel Serverless API Proxy for Google Cloud TTS (bypasses CORS / domain blocks on Vercel)
         const encodedText = encodeURIComponent(cleanText);
-        const cloudTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=id&client=tw-ob`;
+        const cloudTtsUrl = `/api/tts?text=${encodedText}`;
 
         const audio = new Audio(cloudTtsUrl);
         audio.volume = 1.0;
